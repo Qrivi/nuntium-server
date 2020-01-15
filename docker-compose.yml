@@ -1,0 +1,24 @@
+version: '2'
+services:
+  fappstore:
+    container_name: fappstore
+    image: 'mongo:3.6'
+    ports:
+      - '27018:27017'
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/log/mongo.log
+    command: 'mongod'
+
+  fappserver:
+    container_name: fappserver
+    image: 'qrivi/fappserver:latest'
+    restart: always
+    ports:
+      - '8081:8081'
+    environment:
+      - DEBUG_PROPS=${DEBUG_PROPS}
+    links:
+      - fappstore
+    depends_on:
+      - fappstore
