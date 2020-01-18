@@ -56,3 +56,7 @@ tasks.withType<KotlinCompile> {
         jvmTarget = "11"
     }
 }
+
+tasks.assemble {
+    dependsOn(tasks.ktlintFormat)
+}
