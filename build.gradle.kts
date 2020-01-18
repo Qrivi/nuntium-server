@@ -5,6 +5,7 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 plugins {
+    id("org.jlleitschuh.gradle.ktlint") version "9.1.1"
     id("com.google.cloud.tools.jib") version "1.8.0"
     id("org.springframework.boot") version "2.2.2.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
@@ -55,5 +56,3 @@ tasks.withType<KotlinCompile> {
         jvmTarget = "11"
     }
 }
-
-

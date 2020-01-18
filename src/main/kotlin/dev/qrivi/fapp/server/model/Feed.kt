@@ -5,5 +5,7 @@ import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "feeds")
-data class Feed(@Id var id: Long,
-                @Indexed var url: String)
+data class Feed(
+    @Id var id: Long,
+    @Indexed var url: String
+)
