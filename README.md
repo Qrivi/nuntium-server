@@ -8,7 +8,7 @@ This will fetch a MongoDB image and the fappserver image from Docker Hub, and ru
 
 ### Run for development
 ```shell script
-docker-compose run --name fappstore fappstore
+docker-compose run --service-ports fappstore
 ./gradlew clean bootRun
 ```
 This will fetch a MongoDB image from Docker Hub and deploy fappserver locally as a Spring Boot application (will run on port 8088 rather than 8080).
