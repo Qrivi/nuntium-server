@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/dummy")
-abstract class TempController(private val userRepository: UserRepository) {
+class DummyController(private val userRepository: UserRepository) {
 
     @GetMapping("/hello")
     fun hello(@RequestParam(value = "name", defaultValue = "World") name: String): String {
         return "Hello $name"
     }
 
+    @GetMapping("/setup")
     fun setup(): String {
         val kristof = User(email = "hello@kristofdewil.de", name = "Kristof Dewilde", password = "hashed")
         val notKristof = User(email = "bye@kristofdewil.de", name = "Not Kristof Dewilde", password = "hashed")
