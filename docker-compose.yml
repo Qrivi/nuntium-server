@@ -1,13 +1,11 @@
-version: '2'
+version: '3'
+
 services:
   fappstore:
     container_name: fappstore
-    image: 'mongo:3.6'
+    image: 'mongo:4.2.2'
     ports:
       - '27017:27017'
-    environment:
-      - MONGO_DATA_DIR=/data/db
-      - MONGO_LOG_DIR=/log/mongo.log
     command: 'mongod'
 
   fappserver:
