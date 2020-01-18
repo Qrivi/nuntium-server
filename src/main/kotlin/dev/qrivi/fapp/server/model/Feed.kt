@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "feeds")
 data class Feed(
-    @Id var id: Long,
+    @Id var id: String? = null,
     @Indexed var url: String
 )

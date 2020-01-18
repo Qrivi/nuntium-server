@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "users")
 data class User(
-    @Id var id: Long,
+    @Id var id: String? = null,
     @Indexed var email: String,
     var name: String,
     var password: String,
-    var feeds: List<Feed>
+    val feeds: List<Feed> = arrayListOf()
 )
