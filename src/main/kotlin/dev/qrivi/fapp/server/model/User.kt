@@ -9,5 +9,5 @@ data class User(
     var email: String,
     var name: String,
     var password: String,
-    val feeds: List<Feed> = arrayListOf()
+    val feeds: MutableList<Feed> = arrayListOf()
 )
