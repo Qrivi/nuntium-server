@@ -9,5 +9,6 @@ data class User(
     var email: String,
     var name: String,
     var password: String,
-    val feeds: MutableList<Feed> = arrayListOf()
+    var tokens: MutableList<Token> = mutableListOf(),
+    val feeds: MutableList<Feed> = mutableListOf()
 )
