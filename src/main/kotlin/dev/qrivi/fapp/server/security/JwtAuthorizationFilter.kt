@@ -13,7 +13,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
@@ -42,11 +41,10 @@ class JwtAuthorizationFilter(authenticationManager: AuthenticationManager) : Bas
                         .parseClaimsJws(authHeader.replace(SecurityConstants.TOKEN_PREFIX, ""))
 
                 val username = token.body.subject
-                val authorities = (token.body["rol"] as List<*>).map { SimpleGrantedAuthority(it as String) }
+                // val authorities = (token.body["rol"] as List<*>).map { SimpleGrantedAuthority(it as String) }
 
-                if (username.isNotEmpty()) {
-                    return UsernamePasswordAuthenticationToken(username, null, authorities)
-                }
+                if (username.isNotEmpty())
+                    return UsernamePasswordAuthenticationToken(username, null, null)
             } catch (e: ExpiredJwtException) {
                 log.warn("Request to parse expired JWT : {} failed : {}", authHeader, e.message)
             } catch (e: UnsupportedJwtException) {

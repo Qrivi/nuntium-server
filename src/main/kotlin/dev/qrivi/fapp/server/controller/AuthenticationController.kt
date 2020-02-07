@@ -5,7 +5,8 @@ import dev.qrivi.fapp.server.dto.res.Response
 import dev.qrivi.fapp.server.dto.res.error.BadRequest
 import dev.qrivi.fapp.server.dto.res.error.Unauthorized
 import dev.qrivi.fapp.server.service.UserService
-import dev.qrivi.fapp.server.util.createResponse
+import dev.qrivi.fapp.server.util.generateAccessToken
+import dev.qrivi.fapp.server.util.generateResponse
 import dev.qrivi.fapp.server.util.toAuthenticatedUser
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid
@@ -18,22 +19,19 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/auth")
-@Suppress("FoldInitializerAndIfToElvis")
 class AuthenticationController(private val userService: UserService) {
 
     @PostMapping("/refresh")
     fun authWithToken(@Valid @RequestBody dto: AuthWithTokenDTO, res: BindingResult, req: HttpServletRequest): ResponseEntity<Response> {
         if (res.hasErrors())
-            return createResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
+            return generateResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
 
         val user = userService.getUserWithToken(dto.email, dto.token)
-        if (user == null)
-            return createResponse(BadRequest(error = "Invalid refresh token or unregistered user"))
+                ?: return generateResponse(BadRequest(error = "Invalid refresh token or unregistered user"))
 
-        if (!userService.validateToken(user, dto.token))
-            return createResponse(Unauthorized(reason = Unauthorized.Reason.EXPIRED_ACCESS_TOKEN, realm = req.serverName))
+        val token = userService.refreshToken(user, dto.token)
+                ?: return generateResponse(Unauthorized(reason = Unauthorized.Reason.EXPIRED_ACCESS_TOKEN, realm = req.serverName))
 
-        // Add JWT to auth header
-        return createResponse(user.toAuthenticatedUser(dto.token))
+        return generateResponse(user.toAuthenticatedUser(generateAccessToken(user, token)))
     }
 }

@@ -9,6 +9,6 @@ data class Feed(
     var title: String,
     var link: String,
     var url: String,
-    var podcast: Boolean,
+    val podcast: Boolean,
     val savedItems: MutableList<Item> = mutableListOf()
 )

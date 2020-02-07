@@ -4,7 +4,7 @@ import dev.qrivi.fapp.server.constants.SecurityConstants
 import dev.qrivi.fapp.server.model.Token
 import dev.qrivi.fapp.server.model.User
 import dev.qrivi.fapp.server.repository.UserRepository
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 
@@ -24,7 +24,7 @@ class UserService(private val userRepository: UserRepository) {
 
     fun getUserWithToken(email: String, token: String): User? {
         val user = this.getUser(email)
-        if (user != null && user.tokens.map { it.token }.contains(token))
+        if (user != null && user.tokens.map { it.value }.contains(token))
             return user
         return null
     }
@@ -38,17 +38,22 @@ class UserService(private val userRepository: UserRepository) {
         return userRepository.save(user)
     }
 
-    fun generateNewTokenForUser(user: User, description: String): Token {
-        val token = Token(description)
+    fun addToken(user: User, tokenDescription: String): Token {
+        val token = Token(tokenDescription)
         user.tokens.add(token)
         userRepository.save(user)
         return token
     }
 
-    fun validateToken(user: User, token: String): Boolean {
-        return user.tokens.find { it.token == token }!!.generated
-                .plusHours(SecurityConstants.REFRESH_TTL)
-                .isAfter(LocalDateTime.now())
+    fun refreshToken(user: User, tokenValue: String): Token? {
+        val token = user.tokens.find { it.value == tokenValue }
+                ?: return null
+        if (token.generated.plusHours(SecurityConstants.REFRESH_TTL).isBefore(ZonedDateTime.now()))
+            return null // we won't refresh expired refresh tokens
+
+        token.generated = ZonedDateTime.now()
+        userRepository.save(user)
+        return token
     }
 
     private fun hashPassword(password: String): String {
