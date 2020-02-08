@@ -64,6 +64,11 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+tasks.register<Copy>("installGitHooks") {
+    from("hooks")
+    into(".git/hooks")
+}
+
 tasks.assemble {
-    dependsOn(tasks.ktlintFormat)
+    dependsOn(":installGitHooks", tasks.ktlintFormat)
 }
