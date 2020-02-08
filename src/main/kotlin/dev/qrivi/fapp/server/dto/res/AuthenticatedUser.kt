@@ -6,8 +6,8 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 
 data class AuthenticatedUser(
-    override val httpStatus: HttpStatus = HttpStatus.OK,
-    override val httpHeaders: HttpHeaders = HttpHeaders(),
+    @JsonIgnore override val httpStatus: HttpStatus = HttpStatus.OK,
+    @JsonIgnore override val httpHeaders: HttpHeaders = HttpHeaders(),
 
     @JsonIgnore val authorization: String,
 

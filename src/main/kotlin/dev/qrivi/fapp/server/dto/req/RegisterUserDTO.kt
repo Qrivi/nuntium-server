@@ -5,7 +5,7 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
-data class AuthWithPasswordDTO(
+data class RegisterUserDTO(
     @get:NotEmpty(message = "{NotEmpty.AuthWithPasswordDTO.email}")
     @get:Email(message = "{Email.AuthWithPasswordDTO.email}")
     val email: String,
@@ -15,5 +15,6 @@ data class AuthWithPasswordDTO(
     @get:WhitelistedPassword(message = "{WhitelistedPassword.AuthWithPasswordDTO.password}")
     val password: String,
 
+    val name: String = "Human",
     val agent: String = "Unknown Device"
 )

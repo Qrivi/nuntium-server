@@ -2,6 +2,7 @@ package dev.qrivi.fapp.server.controller
 
 import dev.qrivi.fapp.server.dto.req.AuthWithPasswordDTO
 import dev.qrivi.fapp.server.dto.req.AuthWithTokenDTO
+import dev.qrivi.fapp.server.dto.req.RegisterUserDTO
 import dev.qrivi.fapp.server.dto.res.Response
 import dev.qrivi.fapp.server.dto.res.error.BadRequest
 import dev.qrivi.fapp.server.dto.res.error.Unauthorized
@@ -9,6 +10,7 @@ import dev.qrivi.fapp.server.service.UserService
 import dev.qrivi.fapp.server.util.generateAccessToken
 import dev.qrivi.fapp.server.util.generateResponse
 import dev.qrivi.fapp.server.util.toAuthenticatedUser
+import dev.qrivi.fapp.server.util.toNewUser
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,7 +24,20 @@ import javax.validation.Valid
 @RequestMapping("/auth")
 class AuthenticationController(private val userService: UserService) {
 
-    @PostMapping("/")
+    @PostMapping("/register")
+    fun registerUser(@Valid @RequestBody dto: RegisterUserDTO, res: BindingResult, req: HttpServletRequest): ResponseEntity<Response> {
+        if (res.hasErrors())
+            return generateResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
+
+        if (userService.getUserWithPassword(dto.email, dto.password) != null)
+            return generateResponse(BadRequest(error = "A user was already registered with ${dto.email}"))
+
+        val user = userService.createUser(dto.email, dto.name, dto.password)
+        val token = userService.addToken(user, dto.agent)
+        return generateResponse(user.toNewUser(generateAccessToken(user, token)))
+    }
+
+    @PostMapping("/login")
     fun authWithPassword(@Valid @RequestBody dto: AuthWithPasswordDTO, res: BindingResult, req: HttpServletRequest): ResponseEntity<Response> {
         if (res.hasErrors())
             return generateResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
@@ -30,7 +45,8 @@ class AuthenticationController(private val userService: UserService) {
         val user = userService.getUserWithPassword(dto.email, dto.password)
                 ?: return generateResponse(BadRequest(error = "Unregistered user or invalid password"))
 
-        userService.addToken(user)
+        val token = userService.addToken(user, dto.agent)
+        return generateResponse(user.toAuthenticatedUser(generateAccessToken(user, token)))
     }
 
     @PostMapping("/refresh")

@@ -24,8 +24,8 @@ data class Unauthorized(
         }
 
         httpHeaders.add(HttpHeaders.WWW_AUTHENTICATE,
-                if (updatedError) """Bearer realm="$realm", error="invalid_token", error_description="$error""""
-                else """Bearer realm="$realm"""")
+                if (updatedError) """Bearer realm="$realm", charset="UTF-8", error="invalid_token", error_description="$error""""
+                else """Bearer realm="$realm, charset="UTF-8""""")
     }
 
     enum class Reason {
