@@ -18,7 +18,7 @@ class UserService(private val userRepository: UserRepository) {
 
     fun getUserWithPassword(email: String, password: String): User? {
         val user = this.getUser(email)
-        if (user != null && BCrypt.checkpw(user.password, hashPassword(password)))
+        if (user != null && BCrypt.checkpw(password, user.password))
             return user
         return null
     }
