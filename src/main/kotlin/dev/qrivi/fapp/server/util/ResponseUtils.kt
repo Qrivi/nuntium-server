@@ -7,7 +7,8 @@ import dev.qrivi.fapp.server.model.Token
 import dev.qrivi.fapp.server.model.User
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
-import java.time.ZonedDateTime
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.Date
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,9 +24,9 @@ fun generateAccessToken(user: User, token: Token): String {
             .setIssuer(SecurityConstants.TOKEN_ISSUER)
             .setAudience(SecurityConstants.TOKEN_AUDIENCE)
             .setSubject(user.email)
-            .setExpiration(Date.from(ZonedDateTime.now().plusHours(SecurityConstants.TOKEN_TTL).toInstant()))
+            .setExpiration(Date.from(Instant.now().plus(SecurityConstants.TOKEN_TTL, ChronoUnit.HOURS)))
             .claim("refresh_token", token.value)
-            .claim("refresh_expiry", token.generated.plusHours(SecurityConstants.REFRESH_TTL).toString()) // verify that this is same format as JWT expiration
+            .claim("refresh_expiry", token.generated.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).epochSecond)
             .compact()
     return SecurityConstants.TOKEN_PREFIX + jwt
 }
