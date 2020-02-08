@@ -1,6 +1,6 @@
 package dev.qrivi.fapp.server.util
 
-import dev.qrivi.fapp.server.constants.SecurityConstants
+import dev.qrivi.fapp.server.constant.SecurityConstants
 import dev.qrivi.fapp.server.dto.res.AuthenticatedUser
 import dev.qrivi.fapp.server.dto.res.Response
 import dev.qrivi.fapp.server.model.Token

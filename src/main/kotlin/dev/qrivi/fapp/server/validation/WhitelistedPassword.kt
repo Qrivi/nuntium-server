@@ -1,6 +1,6 @@
 package dev.qrivi.fapp.server.validation
 
-import dev.qrivi.fapp.server.constants.SecurityConstants
+import dev.qrivi.fapp.server.constant.SecurityConstants
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext

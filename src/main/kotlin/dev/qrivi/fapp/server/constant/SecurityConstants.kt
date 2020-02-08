@@ -1,4 +1,4 @@
-package dev.qrivi.fapp.server.constants
+package dev.qrivi.fapp.server.constant
 
 object SecurityConstants {
     const val TOKEN_HEADER = "Authorization"

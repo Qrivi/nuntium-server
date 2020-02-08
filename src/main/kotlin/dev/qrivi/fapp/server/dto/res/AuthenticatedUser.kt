@@ -1,7 +1,7 @@
 package dev.qrivi.fapp.server.dto.res
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import dev.qrivi.fapp.server.constants.SecurityConstants
+import dev.qrivi.fapp.server.constant.SecurityConstants
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 

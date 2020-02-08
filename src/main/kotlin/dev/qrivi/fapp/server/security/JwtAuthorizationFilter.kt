@@ -1,6 +1,6 @@
 package dev.qrivi.fapp.server.security
 
-import dev.qrivi.fapp.server.constants.SecurityConstants
+import dev.qrivi.fapp.server.constant.SecurityConstants
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
