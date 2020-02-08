@@ -6,15 +6,15 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
 data class RegisterUserDTO(
-        @get:NotEmpty(message = "{NotEmpty.RegisterUserDTO.email}")
-        @get:Email(message = "{Email.RegisterUserDTO.email}")
-        val email: String,
+    @get:NotEmpty(message = "{NotEmpty.RegisterUserDTO.email}")
+    @get:Email(message = "{Email.RegisterUserDTO.email}")
+    val email: String,
 
-        @get:NotEmpty(message = "{NotEmpty.RegisterUserDTO.password}")
-        @get:Size(min = 8, message = "{Size.RegisterUserDTO.password}")
-        @get:WhitelistedPassword(message = "{WhitelistedPassword.RegisterUserDTO.password}")
-        val password: String,
+    @get:NotEmpty(message = "{NotEmpty.RegisterUserDTO.password}")
+    @get:Size(min = 8, message = "{Size.RegisterUserDTO.password}")
+    @get:WhitelistedPassword(message = "{WhitelistedPassword.RegisterUserDTO.password}")
+    val password: String,
 
-        val name: String = "Human",
-        val agent: String = "Unknown Device"
+    val name: String = "Human",
+    val agent: String = "Unknown Device"
 )

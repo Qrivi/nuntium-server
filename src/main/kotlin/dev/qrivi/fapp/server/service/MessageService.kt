@@ -22,5 +22,4 @@ class MessageService(private val messageSource: MessageSource) {
             id
         }
     }
-
 }
