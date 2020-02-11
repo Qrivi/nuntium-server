@@ -1,11 +1,15 @@
 #!/bin/bash
 # Make sure this file is executable!
 
-git stash -q --keep-index
-echo "Checking code style prior to committing..."
-./gradlew ktlintCheck
-RESULT=$?
-git stash pop -q
+echo "Hook: verifying/enforcing ktlint code compliancy..."
+./gradlew ktlintFormat
 
-[ $RESULT -ne 0 ] && exit 1
-exit 0
+STATUS=$?
+
+if [ "$STATUS" = 0 ] ; then
+    echo "ktlint found no problems."
+    exit 0
+else
+    echo 1>&2 "ktlint found violations it could not fix."
+    exit 1
+fi
