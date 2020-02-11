@@ -4,10 +4,10 @@ import dev.qrivi.fapp.server.constant.SecurityConstants
 import dev.qrivi.fapp.server.model.Token
 import dev.qrivi.fapp.server.model.User
 import dev.qrivi.fapp.server.repository.UserRepository
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 @Service
 class UserService(private val userRepository: UserRepository) {
@@ -32,9 +32,9 @@ class UserService(private val userRepository: UserRepository) {
 
     fun createUser(email: String, name: String, password: String): User {
         val user = User(
-                email = email,
-                name = name,
-                password = this.hashPassword(password)
+            email = email,
+            name = name,
+            password = this.hashPassword(password)
         )
         return userRepository.save(user)
     }
@@ -48,7 +48,7 @@ class UserService(private val userRepository: UserRepository) {
 
     fun refreshToken(user: User, tokenValue: String): Token? {
         val token = user.tokens.find { it.value == tokenValue }
-                ?: return null
+            ?: return null
         if (token.generated.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).isBefore(Instant.now()))
             return null // we won't refresh expired refresh tokens
 

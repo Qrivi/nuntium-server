@@ -4,9 +4,6 @@ import dev.qrivi.fapp.server.constant.SecurityConstants
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.UnsupportedJwtException
-import javax.servlet.FilterChain
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
@@ -14,6 +11,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.web.servlet.HandlerExceptionResolver
+import javax.servlet.FilterChain
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 class JwtAuthorizationFilter(authenticationManager: AuthenticationManager, private val handlerExceptionResolver: HandlerExceptionResolver) : BasicAuthenticationFilter(authenticationManager) {
 
@@ -40,9 +40,9 @@ class JwtAuthorizationFilter(authenticationManager: AuthenticationManager, priva
         if (!authHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) throw UnsupportedJwtException("Authorization header is not a JWT")
 
         val token = Jwts.parserBuilder()
-                .setSigningKey(SecurityConstants.JWT_SECRET.toByteArray())
-                .build()
-                .parseClaimsJws(authHeader.replace(SecurityConstants.TOKEN_PREFIX, ""))
+            .setSigningKey(SecurityConstants.JWT_SECRET.toByteArray())
+            .build()
+            .parseClaimsJws(authHeader.replace(SecurityConstants.TOKEN_PREFIX, ""))
 
         return UsernamePasswordAuthenticationToken(token.body.subject, null, null)
     }

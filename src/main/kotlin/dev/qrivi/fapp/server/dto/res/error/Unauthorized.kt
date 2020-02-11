@@ -10,8 +10,8 @@ data class Unauthorized(
     @JsonIgnore val realm: String,
     var error: String = "This resource requires valid authentication credentials"
 ) : Response(
-        httpStatus = HttpStatus.UNAUTHORIZED,
-        httpHeaders = HttpHeaders()) {
+    httpStatus = HttpStatus.UNAUTHORIZED,
+    httpHeaders = HttpHeaders()) {
     init {
         var updatedError = true
 
@@ -24,8 +24,8 @@ data class Unauthorized(
         }
 
         httpHeaders.add(HttpHeaders.WWW_AUTHENTICATE,
-                if (updatedError) """Bearer realm="$realm", charset="UTF-8", error="invalid_token", error_description="$error""""
-                else """Bearer realm="$realm", charset="UTF-8"""")
+            if (updatedError) """Bearer realm="$realm", charset="UTF-8", error="invalid_token", error_description="$error""""
+            else """Bearer realm="$realm", charset="UTF-8"""")
     }
 
     enum class Reason {

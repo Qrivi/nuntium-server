@@ -18,14 +18,14 @@ class SecurityConfig(private val handlerExceptionResolver: HandlerExceptionResol
 
     override fun configure(http: HttpSecurity) {
         http.cors().and()
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilter(JwtAuthorizationFilter(authenticationManager(), handlerExceptionResolver))
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/auth/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .addFilter(JwtAuthorizationFilter(authenticationManager(), handlerExceptionResolver))
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 
     @Bean
