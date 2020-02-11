@@ -10,10 +10,11 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.servlet.HandlerExceptionResolver
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-class SecurityConfig : WebSecurityConfigurerAdapter() {
+class SecurityConfig(private val handlerExceptionResolver: HandlerExceptionResolver) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http.cors().and()
@@ -22,7 +23,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(JwtAuthorizationFilter(authenticationManager()))
+                .addFilter(JwtAuthorizationFilter(authenticationManager(), handlerExceptionResolver))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
