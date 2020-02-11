@@ -2,6 +2,7 @@ package dev.qrivi.fapp.server.controller
 
 import dev.qrivi.fapp.server.dto.res.Response
 import dev.qrivi.fapp.server.dto.res.error.BadRequest
+import dev.qrivi.fapp.server.dto.res.error.InternalServerError
 import dev.qrivi.fapp.server.dto.res.error.NotFound
 import dev.qrivi.fapp.server.dto.res.error.Unauthorized
 import dev.qrivi.fapp.server.service.MessageService
@@ -54,5 +55,18 @@ class ExceptionResolver(private val messages: MessageService) {
     @ExceptionHandler
     fun handleJwtException(e: JwtException, req: HttpServletRequest): ResponseEntity<Response> {
         return generateResponse(Unauthorized(reason = Unauthorized.Reason.NO_TOKEN_PROVIDED, realm = req.serverName))
+    }
+
+    @ExceptionHandler
+    fun handleException(e: Exception): ResponseEntity<Response> {
+        val whoopsies = mutableListOf(messages["fapp.exception.Exception.message"], e.message ?: e.javaClass.simpleName)
+        var cause = e.cause
+        var limit = 10
+        while (cause != null && limit != 0) {
+            whoopsies.add(cause.message ?: cause.javaClass.simpleName)
+            cause = cause.cause
+            limit--
+        }
+        return generateResponse(InternalServerError(errors = whoopsies.toList()))
     }
 }
