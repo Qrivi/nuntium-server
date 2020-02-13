@@ -35,7 +35,7 @@ class JwtAuthorizationFilter(authenticationManager: AuthenticationManager, priva
     // - MalformedJwtException   : when the JWT is looking weird
     // - SignatureException      : when the JWT's signature is invalid
     // - JwtException            : when authorization header is missing (wrapped IllegalArgumentException)
-    private fun authenticate(req: HttpServletRequest): UsernamePasswordAuthenticationToken? {
+    private fun authenticate(req: HttpServletRequest): UsernamePasswordAuthenticationToken {
         val authHeader = req.getHeader(SecurityConstants.TOKEN_HEADER) ?: throw JwtException("Authorization header is missing")
         if (!authHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) throw UnsupportedJwtException("Authorization header is not a JWT")
 
