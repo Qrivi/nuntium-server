@@ -1,21 +1,8 @@
-# fapptime (WIP)
+# fapptime
+<a href="https://github.com/Qrivi/fappserver/actions"><img alt="CI" align="right" src="https://github.com/Qrivi/fappserver/workflows/CI/badge.svg?branch=master"></a>
 
-### Run in production
-```shell script
-docker rmi -f qrivi/fappserver # Optional, but makes sure latest image is fetched
-docker-compose up
-```
-This will fetch a MongoDB image and the `fappserver` image from Docker Hub, and run as intended for production.
+---
 
-### Run for development
-```shell script
-docker-compose run --service-ports fappstore
-./gradlew clean bootRun
-```
-This will fetch a MongoDB image from Docker Hub and deploy `fappserver` locally as a Spring Boot application.
+Spring Boot back-end written in Kotlin for an application I hope I can start developing soon.
 
-### Other cool things
-```shell script
-./gradlew clean build jibDockerBuild
-```
-This will build a local docker image with `fappserver` deployed.
+For now there's not really anything to see here. 🤷‍
