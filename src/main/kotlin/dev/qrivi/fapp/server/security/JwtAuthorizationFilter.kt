@@ -1,9 +1,12 @@
 package dev.qrivi.fapp.server.security
 
 import dev.qrivi.fapp.server.constant.SecurityConstants
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.UnsupportedJwtException
+import io.jsonwebtoken.security.SignatureException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
@@ -30,11 +33,11 @@ class JwtAuthorizationFilter(authenticationManager: AuthenticationManager, priva
     }
 
     // Throws exceptions if authentication fails
-    // - ExpiredJwtException     : when the JWT is expired
-    // - UnsupportedJwtException : when the JWT is signed with a different key/algorithm
-    // - MalformedJwtException   : when the JWT is looking weird
-    // - SignatureException      : when the JWT's signature is invalid
-    // - JwtException            : when authorization header is missing (wrapped IllegalArgumentException)
+    @Throws(ExpiredJwtException::class, // when the JWT is expired
+        UnsupportedJwtException::class, // when the JWT is signed with a different key/algorithm
+        MalformedJwtException::class, // when the JWT is looking weird
+        SignatureException::class, // when the JWT signature is invalid
+        JwtException::class) // when authorization header is missing (wrapped IllegalArgumentException)
     private fun authenticate(req: HttpServletRequest): UsernamePasswordAuthenticationToken {
         val authHeader = req.getHeader(SecurityConstants.TOKEN_HEADER) ?: throw JwtException("Authorization header is missing")
         if (!authHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) throw UnsupportedJwtException("Authorization header is not a JWT")
