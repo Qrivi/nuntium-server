@@ -35,8 +35,9 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    runtimeOnly("org.postgresql:postgresql")
 
     implementation("io.jsonwebtoken:jjwt-api:0.11.0")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.0")
