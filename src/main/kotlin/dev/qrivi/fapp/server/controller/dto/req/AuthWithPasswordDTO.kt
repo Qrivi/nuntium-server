@@ -1,4 +1,4 @@
-package dev.qrivi.fapp.server.dto.req
+package dev.qrivi.fapp.server.controller.dto.req
 
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
@@ -11,5 +11,5 @@ data class AuthWithPasswordDTO(
     @get:NotEmpty(message = "{NotEmpty.AuthWithPasswordDTO.password}")
     val password: String,
 
-    val agent: String = "Unknown Device"
+    val client: String?
 )

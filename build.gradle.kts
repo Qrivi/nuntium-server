@@ -5,13 +5,13 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 plugins {
-    id("org.jlleitschuh.gradle.ktlint") version "9.1.1"
+    id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
     id("com.google.cloud.tools.jib") version "1.8.0"
     id("org.springframework.boot") version "2.2.2.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
-    kotlin("jvm") version "1.3.61"
-    kotlin("plugin.spring") version "1.3.61"
-    kotlin("plugin.jpa") version "1.3.61"
+    kotlin("jvm") version "1.4.10"
+    kotlin("plugin.spring") version "1.4.10"
+    kotlin("plugin.jpa") version "1.4.10"
 }
 
 jib {
@@ -39,6 +39,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     runtimeOnly("org.postgresql:postgresql")
 
+    implementation("nl.basjes.parse.useragent:yauaa:5.19")
     implementation("io.jsonwebtoken:jjwt-api:0.11.0")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.0")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.0")
@@ -62,6 +63,7 @@ tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "11"
+        languageVersion = "1.4"
     }
 }
 

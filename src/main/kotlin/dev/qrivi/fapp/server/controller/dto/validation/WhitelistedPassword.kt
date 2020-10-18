@@ -1,4 +1,4 @@
-package dev.qrivi.fapp.server.validation
+package dev.qrivi.fapp.server.controller.dto.validation
 
 import dev.qrivi.fapp.server.constant.SecurityConstants
 import javax.validation.Constraint

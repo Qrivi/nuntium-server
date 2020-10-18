@@ -1,7 +1,8 @@
 package dev.qrivi.fapp.server.controller
 
-import dev.qrivi.fapp.server.model.User
-import dev.qrivi.fapp.server.repository.UserRepository
+import dev.qrivi.fapp.server.persistence.entity.User
+import dev.qrivi.fapp.server.persistence.entity.UserStatus
+import dev.qrivi.fapp.server.persistence.repository.UserRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -26,8 +27,22 @@ class DummyController(private val userRepository: UserRepository) {
 
     @GetMapping("/setup")
     fun setup(): String {
-        val kristof = User(email = "hello@kristofdewil.de", name = "Kristof Dewilde", password = "hashed")
-        val notKristof = User(email = "bye@kristofdewil.de", name = "Not Kristof Dewilde", password = "hashed")
+        val kristof = User(
+            email = "hello@kristofdewil.de",
+            name = "Kristof Dewilde",
+            password = "hashed",
+            status = UserStatus.JOINED,
+            subscriptions = emptySet(),
+            readItems = emptySet()
+        )
+        val notKristof = User(
+            email = "bye@kristofdewil.de",
+            name = "Not Kristof Dewilde",
+            password = "hashed",
+            status = UserStatus.JOINED,
+            subscriptions = emptySet(),
+            readItems = emptySet()
+        )
 
         userRepository.save(kristof)
         userRepository.save(notKristof)
@@ -45,23 +60,23 @@ class DummyController(private val userRepository: UserRepository) {
 
     // gets a single user
     @GetMapping("users/{id}")
-    fun getUserById(@PathVariable id: String): ResponseEntity<User> =
+    fun getUserById(@PathVariable id: Long): ResponseEntity<User> =
         userRepository.findById(id).map {
             ResponseEntity.ok(it)
         }.orElse(ResponseEntity.notFound().build())
 
     // updates a user
     @PutMapping("/users/{id}")
-    fun updateUser(@PathVariable id: String, @Valid @RequestBody updatedUser: User):
+    fun updateUser(@PathVariable id: Long, @Valid @RequestBody updatedUser: User):
         ResponseEntity<User> =
-        userRepository.findById(id).map {
-            val newUser = it.copy(name = updatedUser.name, email = updatedUser.email)
-            ResponseEntity.ok().body(userRepository.save(newUser))
-        }.orElse(ResponseEntity.notFound().build())
+            userRepository.findById(id).map {
+                val newUser = it.copy(name = updatedUser.name, email = updatedUser.email)
+                ResponseEntity.ok().body(userRepository.save(newUser))
+            }.orElse(ResponseEntity.notFound().build())
 
     // deletes a user
     @DeleteMapping("/users/{id}")
-    fun deleteUser(@PathVariable id: String): ResponseEntity<Void> =
+    fun deleteUser(@PathVariable id: Long): ResponseEntity<Void> =
         userRepository.findById(id).map {
             userRepository.delete(it)
             ResponseEntity<Void>(HttpStatus.OK)

@@ -1,4 +1,4 @@
-package dev.qrivi.fapp.server.dto.res
+package dev.qrivi.fapp.server.controller.dto.res
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import dev.qrivi.fapp.server.constant.SecurityConstants

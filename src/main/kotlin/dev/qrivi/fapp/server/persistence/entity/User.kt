@@ -1,6 +1,6 @@
-package dev.qrivi.fapp.server.model
+package dev.qrivi.fapp.server.persistence.entity
 
-import dev.qrivi.fapp.server.common.Identifiable
+import dev.qrivi.fapp.server.persistence.Identifiable
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -28,15 +28,19 @@ data class User(
     var status: UserStatus,
 
     @ManyToMany
-    @JoinTable(name = "subscriptions",
+    @JoinTable(
+        name = "subscriptions",
         joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "feed_id", referencedColumnName = "id")])
+        inverseJoinColumns = [JoinColumn(name = "feed_id", referencedColumnName = "id")]
+    )
     val subscriptions: Set<Feed>,
 
     @ManyToMany
-    @JoinTable(name = "read_items",
+    @JoinTable(
+        name = "read_items",
         joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-        inverseJoinColumns = [JoinColumn(name = "item_id", referencedColumnName = "id")])
+        inverseJoinColumns = [JoinColumn(name = "item_id", referencedColumnName = "id")]
+    )
     val readItems: Set<Feed>
 
 ) : Identifiable()

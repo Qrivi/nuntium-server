@@ -1,13 +1,10 @@
 package dev.qrivi.fapp.server.service
 
-import dev.qrivi.fapp.server.constant.SecurityConstants
-import dev.qrivi.fapp.server.model.Token
-import dev.qrivi.fapp.server.model.User
-import dev.qrivi.fapp.server.repository.UserRepository
+import dev.qrivi.fapp.server.persistence.entity.User
+import dev.qrivi.fapp.server.persistence.entity.UserStatus
+import dev.qrivi.fapp.server.persistence.repository.UserRepository
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 @Service
 class UserService(private val userRepository: UserRepository) {
@@ -23,38 +20,16 @@ class UserService(private val userRepository: UserRepository) {
         return null
     }
 
-    fun getUserWithToken(email: String, token: String): User? {
-        val user = this.getUser(email)
-        if (user != null && user.tokens.map { it.value }.contains(token))
-            return user
-        return null
-    }
-
     fun createUser(email: String, name: String, password: String): User {
         val user = User(
             email = email,
             name = name,
-            password = this.hashPassword(password)
+            password = this.hashPassword(password),
+            status = UserStatus.JOINED,
+            subscriptions = emptySet(),
+            readItems = emptySet()
         )
         return userRepository.save(user)
-    }
-
-    fun addToken(user: User, tokenDescription: String): Token {
-        val token = Token(tokenDescription)
-        user.tokens.add(token)
-        userRepository.save(user)
-        return token
-    }
-
-    fun refreshToken(user: User, tokenValue: String): Token? {
-        val token = user.tokens.find { it.value == tokenValue }
-            ?: return null
-        if (token.generated.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).isBefore(Instant.now()))
-            return null // we won't refresh expired refresh tokens
-
-        token.generated = Instant.now()
-        userRepository.save(user)
-        return token
     }
 
     private fun hashPassword(password: String): String {

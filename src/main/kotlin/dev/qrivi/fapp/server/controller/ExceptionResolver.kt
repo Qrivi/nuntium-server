@@ -1,10 +1,10 @@
 package dev.qrivi.fapp.server.controller
 
-import dev.qrivi.fapp.server.dto.res.Response
-import dev.qrivi.fapp.server.dto.res.error.BadRequest
-import dev.qrivi.fapp.server.dto.res.error.InternalServerError
-import dev.qrivi.fapp.server.dto.res.error.NotFound
-import dev.qrivi.fapp.server.dto.res.error.Unauthorized
+import dev.qrivi.fapp.server.controller.dto.res.Response
+import dev.qrivi.fapp.server.controller.dto.res.error.BadRequest
+import dev.qrivi.fapp.server.controller.dto.res.error.InternalServerError
+import dev.qrivi.fapp.server.controller.dto.res.error.NotFound
+import dev.qrivi.fapp.server.controller.dto.res.error.Unauthorized
 import dev.qrivi.fapp.server.service.MessageService
 import dev.qrivi.fapp.server.util.generateResponse
 import io.jsonwebtoken.ExpiredJwtException

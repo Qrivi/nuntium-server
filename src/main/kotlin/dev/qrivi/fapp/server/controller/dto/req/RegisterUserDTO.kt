@@ -1,6 +1,6 @@
-package dev.qrivi.fapp.server.dto.req
+package dev.qrivi.fapp.server.controller.dto.req
 
-import dev.qrivi.fapp.server.validation.WhitelistedPassword
+import dev.qrivi.fapp.server.controller.dto.validation.WhitelistedPassword
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
@@ -15,6 +15,6 @@ data class RegisterUserDTO(
     @get:WhitelistedPassword(message = "{WhitelistedPassword.RegisterUserDTO.password}")
     val password: String,
 
-    val name: String = "Human",
-    val agent: String = "Unknown Device"
+    val name: String?,
+    val client: String?
 )

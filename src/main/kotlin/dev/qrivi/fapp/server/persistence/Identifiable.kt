@@ -1,4 +1,4 @@
-package dev.qrivi.fapp.server.common
+package dev.qrivi.fapp.server.persistence
 
 import javax.persistence.Column
 import javax.persistence.GeneratedValue

@@ -1,6 +1,6 @@
 package dev.qrivi.fapp.server.config
 
-import dev.qrivi.fapp.server.security.JwtAuthorizationFilter
+import dev.qrivi.fapp.server.filter.JwtAuthorizationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

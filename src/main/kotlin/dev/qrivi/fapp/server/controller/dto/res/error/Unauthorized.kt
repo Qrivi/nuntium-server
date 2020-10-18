@@ -1,7 +1,7 @@
-package dev.qrivi.fapp.server.dto.res.error
+package dev.qrivi.fapp.server.controller.dto.res.error
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import dev.qrivi.fapp.server.dto.res.Response
+import dev.qrivi.fapp.server.controller.dto.res.Response
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 
@@ -11,7 +11,8 @@ data class Unauthorized(
     var error: String = "This resource requires valid authentication credentials"
 ) : Response(
     httpStatus = HttpStatus.UNAUTHORIZED,
-    httpHeaders = HttpHeaders()) {
+    httpHeaders = HttpHeaders()
+) {
     init {
         var updatedError = true
 
@@ -23,9 +24,11 @@ data class Unauthorized(
             else -> updatedError = false
         }
 
-        httpHeaders.add(HttpHeaders.WWW_AUTHENTICATE,
+        httpHeaders.add(
+            HttpHeaders.WWW_AUTHENTICATE,
             if (updatedError) """Bearer realm="$realm", charset="UTF-8", error="invalid_token", error_description="$error""""
-            else """Bearer realm="$realm", charset="UTF-8"""")
+            else """Bearer realm="$realm", charset="UTF-8""""
+        )
     }
 
     enum class Reason {

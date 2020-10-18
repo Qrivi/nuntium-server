@@ -1,6 +1,6 @@
-package dev.qrivi.fapp.server.dto.res.error
+package dev.qrivi.fapp.server.controller.dto.res.error
 
-import dev.qrivi.fapp.server.dto.res.Response
+import dev.qrivi.fapp.server.controller.dto.res.Response
 import org.springframework.http.HttpStatus
 
 data class InternalServerError(

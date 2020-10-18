@@ -1,6 +1,6 @@
-package dev.qrivi.fapp.server.model
+package dev.qrivi.fapp.server.persistence.entity
 
-import dev.qrivi.fapp.server.common.Identifiable
+import dev.qrivi.fapp.server.persistence.Identifiable
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
