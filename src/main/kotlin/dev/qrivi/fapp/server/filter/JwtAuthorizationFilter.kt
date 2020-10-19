@@ -7,8 +7,6 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.SignatureException
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -19,8 +17,6 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class JwtAuthorizationFilter(authenticationManager: AuthenticationManager, private val handlerExceptionResolver: HandlerExceptionResolver) : BasicAuthenticationFilter(authenticationManager) {
-
-    private val log: Logger = LoggerFactory.getLogger(JwtAuthorizationFilter::class.java)
 
     override fun doFilterInternal(req: HttpServletRequest, res: HttpServletResponse, chain: FilterChain) {
         try {

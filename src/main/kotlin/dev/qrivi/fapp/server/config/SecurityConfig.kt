@@ -4,6 +4,7 @@ import dev.qrivi.fapp.server.filter.JwtAuthorizationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -16,11 +17,17 @@ import org.springframework.web.servlet.HandlerExceptionResolver
 @EnableGlobalMethodSecurity(securedEnabled = true)
 class SecurityConfig(private val handlerExceptionResolver: HandlerExceptionResolver) : WebSecurityConfigurerAdapter() {
 
+    override fun configure(web: WebSecurity) {
+        web.ignoring()
+            .antMatchers("/auth/**")
+            .antMatchers("/dummy/setup")
+    }
+
     override fun configure(http: HttpSecurity) {
-        http.cors().and()
+        http.cors()
+            .and()
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/auth/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilter(JwtAuthorizationFilter(authenticationManager(), handlerExceptionResolver))
