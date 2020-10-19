@@ -5,6 +5,9 @@ build/
 !**/src/main/**
 !**/src/test/**
 
+## Docker ###
+/fappstore/
+
 ### STS ###
 .apt_generated
 .classpath
@@ -21,7 +24,7 @@ build/
 *.ipr
 out/
 
-### NetBeans ###
+### NetBeans 🤮 ###
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -30,7 +33,6 @@ out/
 
 ### VS Code ###
 .vscode/
-
 
 # Windows image file caches
 Thumbs.db

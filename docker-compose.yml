@@ -1,18 +1,23 @@
 version: '3'
 
 services:
-  fappstore:
-    container_name: fappstore
-    image: 'mongo:4.2.2'
-    ports:
-      - '27017:27017'
-    command: 'mongod'
+    fappstore:
+        container_name: fappstore
+        image: 'postgres:12'
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_DB: 'fappdb'
+            POSTGRES_USER: 'fappdb_user'
+            POSTGRES_PASSWORD: 'fappdb_password'
+        volumes:
+            - ./fappstore:/var/lib/postgresql/data
 
-  fappserver:
-    container_name: fappserver
-    image: 'qrivi/fappserver:latest'
-    restart: always
-    ports:
-      - '8080:8080'
-    depends_on:
-      - fappstore
+    fappserver:
+        container_name: fappserver
+        image: 'qrivi/fappserver:latest'
+        restart: always
+        ports:
+            - '8080:8080'
+        depends_on:
+            - fappstore
