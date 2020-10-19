@@ -1,7 +1,7 @@
 package dev.qrivi.fapp.server.persistence.entity
 
 import dev.qrivi.fapp.server.persistence.Identifiable
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
@@ -29,7 +29,7 @@ open class Item(
     open var description: String,
 
     @Column(name = "published")
-    open var published: LocalDateTime,
+    open var published: ZonedDateTime,
 
     @Column(name = "content")
     open var content: String

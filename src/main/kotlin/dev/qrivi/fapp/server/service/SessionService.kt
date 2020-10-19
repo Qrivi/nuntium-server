@@ -5,7 +5,8 @@ import dev.qrivi.fapp.server.persistence.entity.Account
 import dev.qrivi.fapp.server.persistence.entity.Session
 import dev.qrivi.fapp.server.persistence.repository.SessionRepository
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 
@@ -17,7 +18,7 @@ class SessionService(private val sessionRepository: SessionRepository) {
     }
 
     fun createSession(account: Account, description: String): Session {
-        val now = LocalDateTime.now()
+        val now = ZonedDateTime.now(ZoneId.systemDefault())
         val session = Session(
             account = account,
             token = UUID.randomUUID().toString(),
@@ -29,7 +30,7 @@ class SessionService(private val sessionRepository: SessionRepository) {
     }
 
     fun refreshSession(session: Session, description: String?): Session? {
-        val now = LocalDateTime.now()
+        val now = ZonedDateTime.now(ZoneId.systemDefault())
         if (session.lastActive.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).isBefore(now)) {
             // token too old -- not safe.
             this.deleteSession(session)

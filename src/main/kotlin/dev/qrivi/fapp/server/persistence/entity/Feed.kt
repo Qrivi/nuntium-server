@@ -1,7 +1,7 @@
 package dev.qrivi.fapp.server.persistence.entity
 
 import dev.qrivi.fapp.server.persistence.Identifiable
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -28,9 +28,9 @@ open class Feed(
     open var image: String,
 
     @Column(name = "last_fetched")
-    open var lastFetched: LocalDateTime,
+    open var lastFetched: ZonedDateTime,
 
-    @Column(name = "name")
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     open var status: FeedStatus
 

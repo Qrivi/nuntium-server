@@ -10,7 +10,6 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import java.time.Instant
-import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import java.util.Date
 
@@ -27,7 +26,7 @@ fun generateAccessToken(account: Account, session: Session): String {
         .setSubject(account.email)
         .setExpiration(Date.from(Instant.now().plus(SecurityConstants.TOKEN_TTL, ChronoUnit.HOURS)))
         .claim("refresh_token", session.token)
-        .claim("refresh_expiry", session.firstActive.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).toEpochSecond(ZoneOffset.UTC))
+        .claim("refresh_expiry", session.firstActive.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).toEpochSecond())
         .compact()
     return SecurityConstants.TOKEN_PREFIX + jwt
 }

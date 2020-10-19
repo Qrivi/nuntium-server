@@ -1,7 +1,7 @@
 package dev.qrivi.fapp.server.persistence.entity
 
 import dev.qrivi.fapp.server.persistence.Identifiable
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
@@ -24,9 +24,9 @@ open class Session(
     open var description: String,
 
     @Column(name = "first_active")
-    open var firstActive: LocalDateTime,
+    open var firstActive: ZonedDateTime,
 
     @Column(name = "last_active")
-    open var lastActive: LocalDateTime
+    open var lastActive: ZonedDateTime
 
 ) : Identifiable()
