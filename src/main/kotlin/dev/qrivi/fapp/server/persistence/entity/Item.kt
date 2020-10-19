@@ -10,28 +10,28 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "item")
-data class Item(
+open class Item(
 
     @ManyToOne
     @JoinColumn(name = "feed_id")
-    val feed: Feed,
+    open var feed: Feed,
 
     @Column(name = "title")
-    val title: String,
+    open var title: String,
 
     @Column(name = "url")
-    val url: String,
+    open var url: String,
 
     @Column(name = "guid")
-    val guid: String,
+    open var guid: String,
 
     @Column(name = "description")
-    val description: String,
+    open var description: String,
 
     @Column(name = "published")
-    val published: LocalDateTime,
+    open var published: LocalDateTime,
 
     @Column(name = "content")
-    val content: String
+    open var content: String
 
 ) : Identifiable()

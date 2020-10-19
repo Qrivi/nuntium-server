@@ -1,11 +1,11 @@
 package dev.qrivi.fapp.server.persistence.repository
 
-import dev.qrivi.fapp.server.persistence.entity.User
+import dev.qrivi.fapp.server.persistence.entity.Session
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserRepository : JpaRepository<User, Long> {
+interface SessionRepository : JpaRepository<Session, Long> {
 
-    fun findByEmail(email: String): User?
+    fun findByToken(token: String): Session?
 }

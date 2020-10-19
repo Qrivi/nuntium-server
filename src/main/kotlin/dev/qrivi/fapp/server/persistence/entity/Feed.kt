@@ -10,29 +10,29 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "feed")
-data class Feed(
+open class Feed(
 
     @Column(name = "title")
-    val name: String,
+    open var name: String,
 
     @Column(name = "url")
-    val url: String,
+    open var url: String,
 
     @Column(name = "description")
-    val description: String,
+    open var description: String,
 
     @Column(name = "language")
-    var language: String,
+    open var language: String,
 
     @Column(name = "image")
-    var image: String,
+    open var image: String,
 
     @Column(name = "last_fetched")
-    var lastFetched: LocalDateTime,
+    open var lastFetched: LocalDateTime,
 
     @Column(name = "name")
     @Enumerated(EnumType.STRING)
-    var status: FeedStatus
+    open var status: FeedStatus
 
 ) : Identifiable()
 

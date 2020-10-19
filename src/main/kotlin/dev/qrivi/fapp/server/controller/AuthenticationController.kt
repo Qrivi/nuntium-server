@@ -2,17 +2,17 @@ package dev.qrivi.fapp.server.controller
 
 import dev.qrivi.fapp.server.controller.dto.req.AuthWithPasswordDTO
 import dev.qrivi.fapp.server.controller.dto.req.AuthWithTokenDTO
-import dev.qrivi.fapp.server.controller.dto.req.RegisterUserDTO
+import dev.qrivi.fapp.server.controller.dto.req.RegisterAccountDTO
 import dev.qrivi.fapp.server.controller.dto.res.Response
 import dev.qrivi.fapp.server.controller.dto.res.error.BadRequest
 import dev.qrivi.fapp.server.controller.dto.res.error.Unauthorized
-import dev.qrivi.fapp.server.service.TokenService
-import dev.qrivi.fapp.server.service.UserService
+import dev.qrivi.fapp.server.service.AccountService
+import dev.qrivi.fapp.server.service.SessionService
 import dev.qrivi.fapp.server.util.ClientAnalyzer
 import dev.qrivi.fapp.server.util.generateAccessToken
 import dev.qrivi.fapp.server.util.generateResponse
-import dev.qrivi.fapp.server.util.toAuthenticatedUser
-import dev.qrivi.fapp.server.util.toNewUser
+import dev.qrivi.fapp.server.util.toAuthenticatedAccount
+import dev.qrivi.fapp.server.util.toNewAccount
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,27 +26,27 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/auth")
 class AuthenticationController(
-    private val userService: UserService,
-    private val tokenService: TokenService,
+    private val accountService: AccountService,
+    private val sessionService: SessionService,
     private val clientAnalyzer: ClientAnalyzer
 ) {
 
     @PostMapping("/register")
-    fun registerUser(
+    fun register(
         @RequestHeader(value = "User-Agent") userAgent: String,
-        @Valid @RequestBody dto: RegisterUserDTO,
+        @Valid @RequestBody dto: RegisterAccountDTO,
         res: BindingResult,
         req: HttpServletRequest
     ): ResponseEntity<Response> {
         if (res.hasErrors())
             return generateResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
 
-        if (userService.getUser(dto.email) != null)
-            return generateResponse(BadRequest(error = "A user was already registered with ${dto.email}"))
+        if (accountService.getAccount(dto.email) != null)
+            return generateResponse(BadRequest(error = "A account was already registered with ${dto.email}"))
 
-        val user = userService.createUser(dto.email, dto.name ?: "Human", dto.password)
-        val token = tokenService.createToken(user, dto.client ?: clientAnalyzer.getFromUserAgent(userAgent))
-        return generateResponse(user.toNewUser(generateAccessToken(user, token)))
+        val account = accountService.createAccount(dto.email, dto.name ?: "Human", dto.password)
+        val session = sessionService.createSession(account, dto.client ?: clientAnalyzer.getFromUserAgent(userAgent))
+        return generateResponse(account.toNewAccount(generateAccessToken(account, session)))
     }
 
     @PostMapping("/login")
@@ -59,11 +59,11 @@ class AuthenticationController(
         if (res.hasErrors())
             return generateResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
 
-        val user = userService.getUserWithPassword(dto.email, dto.password)
-            ?: return generateResponse(BadRequest(error = "Unregistered user or invalid password"))
+        val account = accountService.getAccountWithPassword(dto.email, dto.password)
+            ?: return generateResponse(BadRequest(error = "Unregistered account or invalid password"))
 
-        val token = tokenService.createToken(user, dto.client ?: clientAnalyzer.getFromUserAgent(userAgent))
-        return generateResponse(user.toAuthenticatedUser(generateAccessToken(user, token)))
+        val session = sessionService.createSession(account, dto.client ?: clientAnalyzer.getFromUserAgent(userAgent))
+        return generateResponse(account.toAuthenticatedAccount(generateAccessToken(account, session)))
     }
 
     @PostMapping("/refresh")
@@ -76,16 +76,16 @@ class AuthenticationController(
         if (res.hasErrors())
             return generateResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
 
-        val user = userService.getUser(dto.email)
-            ?: return generateResponse(BadRequest(error = "Unregistered user"))
+        val account = accountService.getAccount(dto.email)
+            ?: return generateResponse(BadRequest(error = "Unregistered account"))
 
-        var token = tokenService.getToken(dto.token)
-        if (token?.user != user) // token is null or token user does not match the requested user
+        var session = sessionService.getSession(dto.token)
+        if (session?.account != account) // token is null or token account does not match the requested account
             return generateResponse(BadRequest(error = "Invalid refresh token"))
 
-        token = tokenService.refreshToken(token, dto.client)
+        session = sessionService.refreshSession(session, dto.client)
             ?: return generateResponse(Unauthorized(reason = Unauthorized.Reason.EXPIRED_ACCESS_TOKEN, realm = req.serverName))
 
-        return generateResponse(user.toAuthenticatedUser(generateAccessToken(user, token)))
+        return generateResponse(account.toAuthenticatedAccount(generateAccessToken(account, session)))
     }
 }

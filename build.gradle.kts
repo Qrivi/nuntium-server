@@ -39,6 +39,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     runtimeOnly("org.postgresql:postgresql")
 
+    implementation("org.hibernate:hibernate-core:5.4.22.Final")
     implementation("nl.basjes.parse.useragent:yauaa:5.19")
     implementation("io.jsonwebtoken:jjwt-api:0.11.0")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.0")
