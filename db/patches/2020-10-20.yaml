@@ -1,0 +1,246 @@
+databaseChangeLog:
+    -   changeSet:
+            id: 69
+            author: Kristof Dewilde
+            changes:
+                -   createTable:
+                        tableName: account
+                        columns:
+                            -   column:
+                                    name: id
+                                    type: BIGINT
+                                    constraints:
+                                        primaryKey: true
+                                        primaryKeyName: account_pkey
+                                        nullable: false
+                            -   column:
+                                    name: name
+                                    type: VARCHAR(255)
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: email
+                                    type: VARCHAR(255)
+                                    constraints:
+                                        nullable: false
+                                        unique: true
+                            -   column:
+                                    name: password
+                                    type: VARCHAR(25)
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: status
+                                    type: VARCHAR(25)
+                                    constraints:
+                                        nullable: false
+                -   createTable:
+                        tableName: session
+                        columns:
+                            -   column:
+                                    constraints:
+                                        primaryKey: true
+                                        primaryKeyName: session_pkey
+                                        nullable: false
+                                    name: id
+                                    type: BIGINT
+                            -   column:
+                                    name: account_id
+                                    type: BIGINT
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: token
+                                    type: VARCHAR(36)
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: description
+                                    type: VARCHAR(255)
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: first_active
+                                    type: TIMESTAMP WITHOUT TIME ZONE
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: last_active
+                                    type: TIMESTAMP WITHOUT TIME ZONE
+                                    constraints:
+                                        nullable: false
+                -   createTable:
+                        tableName: feed
+                        columns:
+                            -   column:
+                                    name: id
+                                    type: BIGINT
+                                    constraints:
+                                        primaryKey: true
+                                        primaryKeyName: feed_pkey
+                                        nullable: false
+                            -   column:
+                                    name: title
+                                    type: VARCHAR(255)
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: url
+                                    type: VARCHAR(255)
+                                    constraints:
+                                        nullable: false
+                                        unique: true
+                            -   column:
+                                    name: description
+                                    type: VARCHAR(255)
+                            -   column:
+                                    name: language
+                                    type: VARCHAR(5)
+                            -   column:
+                                    name: image
+                                    type: VARCHAR(255)
+                            -   column:
+                                    name: last_fetched
+                                    type: TIMESTAMP WITHOUT TIME ZONE
+                            -   column:
+                                    name: status
+                                    type: VARCHAR(25)
+                                    constraints:
+                                        nullable: false
+                -   createTable:
+                        tableName: item
+                        columns:
+                            -   column:
+                                name: id
+                                type: BIGINT
+                                constraints:
+                                    primaryKey: true
+                                    primaryKeyName: item_pkey
+                                    nullable: false
+                            -   column:
+                                    name: feed_id
+                                    type: BIGINT
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: title
+                                    type: VARCHAR(255)
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: url
+                                    type: VARCHAR(255)
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: guid
+                                    type: VARCHAR(255)
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: published
+                                    type: TIMESTAMP WITHOUT TIME ZONE
+                                    constraints:
+                                        nullable: false
+                            -   column:
+                                    name: description
+                                    type: VARCHAR(255)
+                -   createTable:
+                        tableName: subscriptions
+                        columns:
+                            -   column:
+                                    name: account_id
+                                    type: BIGINT
+                                    constraints:
+                                        primaryKey: true
+                                        primaryKeyName: subscriptions_pkey
+                                        nullable: false
+                            -   column:
+                                    name: feed_id
+                                    type: BIGINT
+                                    constraints:
+                                        primaryKey: true
+                                        primaryKeyName: subscriptions_pkey
+                                        nullable: false
+                -   createTable:
+                        tableName: read_items
+                        columns:
+                            -   column:
+                                    name: account_id
+                                    type: BIGINT
+                                    constraints:
+                                        nullable: false
+                                        primaryKey: true
+                                        primaryKeyName: read_items_pkey
+                            -   column:
+                                    name: item_id
+                                    type: BIGINT
+                                    constraints:
+                                        nullable: false
+                                        primaryKey: true
+                                        primaryKeyName: read_items_pkey
+
+                -   addForeignKeyConstraint:
+                        constraintName: session_account_id
+                        baseTableName: session
+                        baseColumnNames: account_id
+                        referencedTableName: account
+                        referencedColumnNames: id
+                        onUpdate: CASCADE
+                        onDelete: NO ACTION
+                        validate: true
+                -   addForeignKeyConstraint:
+                        constraintName: read_items_account_id
+                        baseTableName: read_items
+                        baseColumnNames: account_id
+                        referencedTableName: account
+                        referencedColumnNames: id
+                        onUpdate: CASCADE
+                        onDelete: NO ACTION
+                        validate: true
+                -   addForeignKeyConstraint:
+                        constraintName: subscriptions_account_id
+                        baseTableName: subscriptions
+                        baseColumnNames: account_id
+                        referencedTableName: account
+                        referencedColumnNames: id
+                        onUpdate: CASCADE
+                        onDelete: NO ACTION
+                        validate: true
+                -   addForeignKeyConstraint:
+                        constraintName: read_items_item_id
+                        baseTableName: read_items
+                        baseColumnNames: item_id
+                        referencedTableName: feed
+                        referencedColumnNames: id
+                        onUpdate: CASCADE
+                        onDelete: NO ACTION
+                        validate: true
+                -   addForeignKeyConstraint:
+                        constraintName: subscriptions_feed_id
+                        baseTableName: subscriptions
+                        baseColumnNames: feed_id
+                        referencedTableName: feed
+                        referencedColumnNames: id
+                        onUpdate: CASCADE
+                        onDelete: NO ACTION
+                        validate: true
+                -   addForeignKeyConstraint:
+                        constraintName: item_feed_id
+                        baseTableName: item
+                        baseColumnNames: feed_id
+                        referencedTableName: feed
+                        referencedColumnNames: id
+                        onUpdate: CASCADE
+                        onDelete: NO ACTION
+                        validate: true
+
+                -   createSequence:
+                        sequenceName: id_sequence
+                        dataType: bigint
+                        minValue: 1
+                        maxValue: 9223372036854775807
+                        startValue: 1000
+                        incrementBy: 1
+                        cacheSize: 1
+                        cycle: false

@@ -11,7 +11,7 @@ services:
             POSTGRES_USER: 'fappdb_user'
             POSTGRES_PASSWORD: 'fappdb_password'
         volumes:
-            - ./fappstore:/var/lib/postgresql/data
+            - ./db/data:/var/lib/postgresql/data
 
     fappserver:
         container_name: fappserver

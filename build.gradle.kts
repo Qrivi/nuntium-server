@@ -9,9 +9,22 @@ plugins {
     id("com.google.cloud.tools.jib") version "1.8.0"
     id("org.springframework.boot") version "2.2.2.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
+    id("org.liquibase.gradle") version "2.0.3"
     kotlin("jvm") version "1.4.10"
     kotlin("plugin.spring") version "1.4.10"
     kotlin("plugin.jpa") version "1.4.10"
+}
+
+liquibase {
+    activities.register("main") {
+        this.arguments = mapOf(
+            "logLevel" to "info",
+            "changeLogFile" to "db/generated.yaml",
+            "url" to "jdbc:postgresql://localhost:5432/fappdb_loc",
+            "username" to "fappdb_user",
+            "password" to "fappdb_password"
+        )
+    }
 }
 
 jib {
@@ -54,6 +67,10 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation("org.springframework.security:spring-security-test")
+
+    liquibaseRuntime("org.liquibase:liquibase-core:4.1.1")
+    liquibaseRuntime("org.postgresql:postgresql")
+    liquibaseRuntime("org.yaml:snakeyaml:1.27")
 }
 
 tasks.withType<Test> {

@@ -6,7 +6,7 @@ build/
 !**/src/test/**
 
 ## Docker ###
-/fappstore/
+/db/data/
 
 ### STS ###
 .apt_generated

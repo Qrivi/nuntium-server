@@ -25,13 +25,10 @@ open class Item(
     @Column(name = "guid")
     open var guid: String,
 
-    @Column(name = "description")
-    open var description: String,
-
     @Column(name = "published")
     open var published: ZonedDateTime,
 
-    @Column(name = "content")
-    open var content: String
+    @Column(name = "description")
+    open var description: String
 
 ) : Identifiable()
