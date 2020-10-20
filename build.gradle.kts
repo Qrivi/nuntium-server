@@ -19,12 +19,31 @@ liquibase {
     activities.register("main") {
         this.arguments = mapOf(
             "logLevel" to "info",
-            "changeLogFile" to "db/generated.yaml",
+            "changeLogFile" to "db/changelog.yml",
             "url" to "jdbc:postgresql://localhost:5432/fappdb_loc",
             "username" to "fappdb_user",
             "password" to "fappdb_password"
         )
     }
+    activities.register("production") {
+        this.arguments = mapOf(
+            "logLevel" to "info",
+            "changeLogFile" to "db/changelog.yml",
+            "url" to "jdbc:postgresql://localhost:5432/fappdb",
+            "username" to "fappdb_user",
+            "password" to "fappdb_password"
+        )
+    }
+    activities.register("generate") {
+        this.arguments = mapOf(
+            "logLevel" to "info",
+            "changeLogFile" to "db/generated.yml",
+            "url" to "jdbc:postgresql://localhost:5432/fappdb_loc",
+            "username" to "fappdb_user",
+            "password" to "fappdb_password"
+        )
+    }
+    runList = project.properties["runList"]
 }
 
 jib {

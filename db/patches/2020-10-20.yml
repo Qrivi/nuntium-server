@@ -1,6 +1,6 @@
 databaseChangeLog:
     -   changeSet:
-            id: 69
+            id: 2020-10-20
             author: Kristof Dewilde
             changes:
                 -   createTable:
@@ -111,12 +111,12 @@ databaseChangeLog:
                         tableName: item
                         columns:
                             -   column:
-                                name: id
-                                type: BIGINT
-                                constraints:
-                                    primaryKey: true
-                                    primaryKeyName: item_pkey
-                                    nullable: false
+                                    name: id
+                                    type: BIGINT
+                                    constraints:
+                                        primaryKey: true
+                                        primaryKeyName: item_pkey
+                                        nullable: false
                             -   column:
                                     name: feed_id
                                     type: BIGINT

@@ -1,0 +1,3 @@
+databaseChangeLog:
+    -   include:
+            file: db/patches/2020-10-20.yml

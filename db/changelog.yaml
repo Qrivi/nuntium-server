@@ -1,3 +1,0 @@
-databaseChangeLog:
-    -   include:
-            path: db/patches/2020-10-20.yaml

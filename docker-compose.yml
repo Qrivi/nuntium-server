@@ -7,7 +7,7 @@ services:
         ports:
             - '5432:5432'
         environment:
-            POSTGRES_DB: 'fappdb'
+            POSTGRES_DB: 'fappdb_loc'
             POSTGRES_USER: 'fappdb_user'
             POSTGRES_PASSWORD: 'fappdb_password'
         volumes:

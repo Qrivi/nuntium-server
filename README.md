@@ -9,20 +9,40 @@
 
 ### Run as in production
 
+- Fetch a PostgreSQL image and the `fappserver` image from Docker Hub, and run as intended for production.
 ```shell
 docker rmi -f qrivi/fappserver # Optional, ensures latest image is fetched
 docker-compose up
 ```
-This will fetch a PostgreSQL image and the `fappserver` image from Docker Hub, and run as intended for production.
+⚠️ Will give errors for now, as database won't have been set up properly, and `fappserver` image on DockerHub is out of date (too early to put much time in Docker).
 
-### Other cool things
+### Run for development
 
-```shell
-./gradlew clean build jibDockerBuild
-```
-This will build a local Docker image with `fappserver` deployed.
-
+- Run a PostgreSQL database, either locally or in a Docker container using the included `docker-compose.yml`.
 ```shell
 docker-compose run --service-ports fappstore
 ```
-This will spin up a PostgreSQL image that's ready for `fappserver` to connect to. Nifty during development if you want to deploy locally but don't want to install PostgreSQL on your machine. 👍
+
+- Create a user, password and database.
+```shell
+psql -c "CREATE ROLE fappdb_user WITH LOGIN superuser PASSWORD 'fappdb_password';"
+psql -c "CREATE DATABASE fappdb WITH OWNER fappdb_user;"
+```
+
+- Set up the database with the nifty Liquibase Gradle plugin.
+```shell
+./gradlew dropAll update -PrunList=main
+```
+
+- Deploy and run a `fappserver` instance.
+```shell
+./gradlew bootRun
+```
+
+### Other cool things
+
+- Build a local Docker image with `fappserver` deployed.
+```shell
+./gradlew clean build jibDockerBuild
+```
+
