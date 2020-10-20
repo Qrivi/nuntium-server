@@ -18,12 +18,12 @@ docker-compose up
 
 ### Run for development
 
-- Run a PostgreSQL database, either locally or in a Docker container using the included `docker-compose.yml`.
+- Run the database from the PostgreSQL Docker image in `docker-compose.yml`.
 ```shell
 docker-compose run --service-ports fappstore
 ```
 
-- Create a user, password and database.
+- Local database works too, if you create user, password and database (already done if using Docker).
 ```shell
 psql -c "CREATE ROLE fappdb_user WITH LOGIN superuser PASSWORD 'fappdb_password';"
 psql -c "CREATE DATABASE fappdb WITH OWNER fappdb_user;"
@@ -45,4 +45,3 @@ psql -c "CREATE DATABASE fappdb WITH OWNER fappdb_user;"
 ```shell
 ./gradlew clean build jibDockerBuild
 ```
-
