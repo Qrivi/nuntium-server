@@ -26,7 +26,7 @@ docker-compose run --service-ports fappstore
 - Local database works too, if you create user, password and database (already done if using Docker).
 ```shell
 psql -c "CREATE ROLE fappdb_user WITH LOGIN superuser PASSWORD 'fappdb_password';"
-psql -c "CREATE DATABASE fappdb WITH OWNER fappdb_user;"
+psql -c "CREATE DATABASE fappdb_loc WITH OWNER fappdb_user;"
 ```
 
 - Set up the database with the nifty Liquibase Gradle plugin.
