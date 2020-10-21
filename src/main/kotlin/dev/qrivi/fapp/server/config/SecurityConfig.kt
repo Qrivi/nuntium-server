@@ -1,5 +1,6 @@
 package dev.qrivi.fapp.server.config
 
+import dev.qrivi.fapp.server.constant.SecurityConstants
 import dev.qrivi.fapp.server.filter.JwtAuthorizationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -19,7 +20,7 @@ class SecurityConfig(private val handlerExceptionResolver: HandlerExceptionResol
 
     override fun configure(web: WebSecurity) {
         web.ignoring()
-            .antMatchers("/auth/**")
+            .antMatchers("${SecurityConstants.AUTH_ROUTE}/**")
             .antMatchers("/dummy/setup")
     }
 

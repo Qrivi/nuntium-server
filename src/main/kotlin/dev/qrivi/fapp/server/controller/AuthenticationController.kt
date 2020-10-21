@@ -1,5 +1,6 @@
 package dev.qrivi.fapp.server.controller
 
+import dev.qrivi.fapp.server.constant.SecurityConstants
 import dev.qrivi.fapp.server.controller.dto.req.AuthWithPasswordDTO
 import dev.qrivi.fapp.server.controller.dto.req.AuthWithTokenDTO
 import dev.qrivi.fapp.server.controller.dto.req.RegisterAccountDTO
@@ -13,6 +14,7 @@ import dev.qrivi.fapp.server.util.generateAccessToken
 import dev.qrivi.fapp.server.util.generateResponse
 import dev.qrivi.fapp.server.util.toAuthenticatedAccount
 import dev.qrivi.fapp.server.util.toNewAccount
+import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.PostMapping
@@ -24,7 +26,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(SecurityConstants.AUTH_ROUTE)
 class AuthenticationController(
     private val accountService: AccountService,
     private val sessionService: SessionService,
@@ -51,7 +53,7 @@ class AuthenticationController(
 
     @PostMapping("/login")
     fun authWithPassword(
-        @RequestHeader(value = "User-Agent") userAgent: String,
+        @RequestHeader(value = HttpHeaders.USER_AGENT) userAgent: String,
         @Valid @RequestBody dto: AuthWithPasswordDTO,
         res: BindingResult,
         req: HttpServletRequest
@@ -68,7 +70,7 @@ class AuthenticationController(
 
     @PostMapping("/refresh")
     fun authWithToken(
-        @RequestHeader(value = "User-Agent") userAgent: String,
+        @RequestHeader(value = HttpHeaders.USER_AGENT) userAgent: String,
         @Valid @RequestBody dto: AuthWithTokenDTO,
         res: BindingResult,
         req: HttpServletRequest
