@@ -5,9 +5,14 @@ import dev.qrivi.fapp.server.persistence.entity.AccountStatus
 import dev.qrivi.fapp.server.persistence.repository.AccountRepository
 import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class AccountService(private val accountRepository: AccountRepository) {
+
+    fun getByUuid(uuid: String): Account? {
+        return accountRepository.findByUuid(uuid)
+    }
 
     fun getAccount(email: String): Account? {
         return accountRepository.findByEmail(email)
@@ -22,6 +27,7 @@ class AccountService(private val accountRepository: AccountRepository) {
 
     fun createAccount(email: String, name: String, password: String): Account {
         val account = Account(
+            uuid = UUID.randomUUID().toString(),
             email = email,
             name = name,
             password = this.hashPassword(password),

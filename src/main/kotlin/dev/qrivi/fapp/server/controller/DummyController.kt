@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/dummy")
@@ -20,6 +21,7 @@ class DummyController(private val accountRepository: AccountRepository) {
     @GetMapping("/setup")
     fun setup(): String {
         val kristof = Account(
+            uuid = UUID.randomUUID().toString(),
             email = "hello@kristofdewil.de",
             name = "Kristof Dewilde",
             password = "hashed",
@@ -28,6 +30,7 @@ class DummyController(private val accountRepository: AccountRepository) {
             readItems = mutableSetOf()
         )
         val notKristof = Account(
+            uuid = UUID.randomUUID().toString(),
             email = "bye@kristofdewil.de",
             name = "Not Kristof Dewilde",
             password = "hashed",

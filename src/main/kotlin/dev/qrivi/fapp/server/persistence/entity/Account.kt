@@ -14,6 +14,9 @@ import javax.persistence.Table
 @Table(name = "account")
 open class Account(
 
+    @Column(name = "uuid")
+    open var uuid: String,
+
     @Column(name = "name")
     open var name: String,
 
