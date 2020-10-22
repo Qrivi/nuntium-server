@@ -1,272 +1,272 @@
 databaseChangeLog:
-- changeSet:
-    id: 1603151667407-1
-    author: Qrivi (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: account_pkey
-            name: id
-            type: BIGINT
-        - column:
-            name: email
-            type: VARCHAR(255)
-        - column:
-            name: name
-            type: VARCHAR(255)
-        - column:
-            name: password
-            type: VARCHAR(255)
-        - column:
-            name: status
-            type: VARCHAR(255)
-        tableName: account
-- changeSet:
-    id: 1603151667407-2
-    author: Qrivi (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: feed_pkey
-            name: id
-            type: BIGINT
-        - column:
-            name: description
-            type: VARCHAR(255)
-        - column:
-            name: image
-            type: VARCHAR(255)
-        - column:
-            name: language
-            type: VARCHAR(255)
-        - column:
-            name: last_fetched
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: title
-            type: VARCHAR(255)
-        - column:
-            name: status
-            type: VARCHAR(255)
-        - column:
-            name: url
-            type: VARCHAR(255)
-        tableName: feed
-- changeSet:
-    id: 1603151667407-3
-    author: Qrivi (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: read_items_pkey
-            name: account_id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: read_items_pkey
-            name: item_id
-            type: BIGINT
-        tableName: read_items
-- changeSet:
-    id: 1603151667407-4
-    author: Qrivi (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: subscriptions_pkey
-            name: account_id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: subscriptions_pkey
-            name: feed_id
-            type: BIGINT
-        tableName: subscriptions
-- changeSet:
-    id: 1603151667407-5
-    author: Qrivi (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: session_pkey
-            name: id
-            type: BIGINT
-        - column:
-            name: description
-            type: VARCHAR(255)
-        - column:
-            name: first_active
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: last_active
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: token
-            type: VARCHAR(255)
-        - column:
-            name: account_id
-            type: BIGINT
-        tableName: session
-- changeSet:
-    id: 1603151667407-6
-    author: Qrivi (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: item_pkey
-            name: id
-            type: BIGINT
-        - column:
-            name: content
-            type: VARCHAR(255)
-        - column:
-            name: description
-            type: VARCHAR(255)
-        - column:
-            name: guid
-            type: VARCHAR(255)
-        - column:
-            name: published
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            name: title
-            type: VARCHAR(255)
-        - column:
-            name: url
-            type: VARCHAR(255)
-        - column:
-            name: feed_id
-            type: BIGINT
-        tableName: item
-- changeSet:
-    id: 1603151667407-7
-    author: Qrivi (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: account_id
-        baseTableName: session
-        constraintName: fk9rq7sal1g834sjim3xhswtt26
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: NO ACTION
-        onUpdate: NO ACTION
-        referencedColumnNames: id
-        referencedTableName: account
-        validate: true
-- changeSet:
-    id: 1603151667407-8
-    author: Qrivi (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: account_id
-        baseTableName: read_items
-        constraintName: fkily6aa5fmusbfmumlupk9byig
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: NO ACTION
-        onUpdate: NO ACTION
-        referencedColumnNames: id
-        referencedTableName: account
-        validate: true
-- changeSet:
-    id: 1603151667407-9
-    author: Qrivi (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: account_id
-        baseTableName: subscriptions
-        constraintName: fkkal77jeui4synyuq8o25h1vng
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: NO ACTION
-        onUpdate: NO ACTION
-        referencedColumnNames: id
-        referencedTableName: account
-        validate: true
-- changeSet:
-    id: 1603151667407-10
-    author: Qrivi (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: item_id
-        baseTableName: read_items
-        constraintName: fk2lmwt62n9agq6qpwtvk5w0eho
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: NO ACTION
-        onUpdate: NO ACTION
-        referencedColumnNames: id
-        referencedTableName: feed
-        validate: true
-- changeSet:
-    id: 1603151667407-11
-    author: Qrivi (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: feed_id
-        baseTableName: subscriptions
-        constraintName: fk3s3qi49iqnkof3qul9j9bes5a
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: NO ACTION
-        onUpdate: NO ACTION
-        referencedColumnNames: id
-        referencedTableName: feed
-        validate: true
-- changeSet:
-    id: 1603151667407-12
-    author: Qrivi (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: feed_id
-        baseTableName: item
-        constraintName: fkce639e76vrcfkx5q3qa7imf1o
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: NO ACTION
-        onUpdate: NO ACTION
-        referencedColumnNames: id
-        referencedTableName: feed
-        validate: true
-- changeSet:
-    id: 1603151667407-13
-    author: Qrivi (generated)
-    changes:
-    - createSequence:
-        cacheSize: 1
-        cycle: false
-        dataType: bigint
-        incrementBy: 1
-        maxValue: 9223372036854775807
-        minValue: 1
-        sequenceName: id_sequence
-        startValue: 1000
+  - changeSet:
+      id: 1603151667407-1
+      author: Qrivi (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: account_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+            tableName: account
+  - changeSet:
+      id: 1603151667407-2
+      author: Qrivi (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: feed_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: image
+                  type: VARCHAR(255)
+              - column:
+                  name: language
+                  type: VARCHAR(255)
+              - column:
+                  name: last_fetched
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  name: url
+                  type: VARCHAR(255)
+            tableName: feed
+  - changeSet:
+      id: 1603151667407-3
+      author: Qrivi (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: read_items_pkey
+                  name: account_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: read_items_pkey
+                  name: item_id
+                  type: BIGINT
+            tableName: read_items
+  - changeSet:
+      id: 1603151667407-4
+      author: Qrivi (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: subscriptions_pkey
+                  name: account_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: subscriptions_pkey
+                  name: feed_id
+                  type: BIGINT
+            tableName: subscriptions
+  - changeSet:
+      id: 1603151667407-5
+      author: Qrivi (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: session_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: first_active
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: last_active
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: token
+                  type: VARCHAR(255)
+              - column:
+                  name: account_id
+                  type: BIGINT
+            tableName: session
+  - changeSet:
+      id: 1603151667407-6
+      author: Qrivi (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: item_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: content
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: guid
+                  type: VARCHAR(255)
+              - column:
+                  name: published
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: url
+                  type: VARCHAR(255)
+              - column:
+                  name: feed_id
+                  type: BIGINT
+            tableName: item
+  - changeSet:
+      id: 1603151667407-7
+      author: Qrivi (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: account_id
+            baseTableName: session
+            constraintName: fk9rq7sal1g834sjim3xhswtt26
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: account
+            validate: true
+  - changeSet:
+      id: 1603151667407-8
+      author: Qrivi (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: account_id
+            baseTableName: read_items
+            constraintName: fkily6aa5fmusbfmumlupk9byig
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: account
+            validate: true
+  - changeSet:
+      id: 1603151667407-9
+      author: Qrivi (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: account_id
+            baseTableName: subscriptions
+            constraintName: fkkal77jeui4synyuq8o25h1vng
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: account
+            validate: true
+  - changeSet:
+      id: 1603151667407-10
+      author: Qrivi (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: item_id
+            baseTableName: read_items
+            constraintName: fk2lmwt62n9agq6qpwtvk5w0eho
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: feed
+            validate: true
+  - changeSet:
+      id: 1603151667407-11
+      author: Qrivi (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: feed_id
+            baseTableName: subscriptions
+            constraintName: fk3s3qi49iqnkof3qul9j9bes5a
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: feed
+            validate: true
+  - changeSet:
+      id: 1603151667407-12
+      author: Qrivi (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: feed_id
+            baseTableName: item
+            constraintName: fkce639e76vrcfkx5q3qa7imf1o
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: feed
+            validate: true
+  - changeSet:
+      id: 1603151667407-13
+      author: Qrivi (generated)
+      changes:
+        - createSequence:
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+            incrementBy: 1
+            maxValue: 9223372036854775807
+            minValue: 1
+            sequenceName: id_sequence
+            startValue: 1000
 

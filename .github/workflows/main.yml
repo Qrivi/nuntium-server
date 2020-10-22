@@ -7,16 +7,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Setup Java 11
-      uses: actions/setup-java@v1.3.0
-      with:
-        java-version: 11
+      - name: Setup Java 14
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 14
 
-    - name: Checkout Project
-      uses: actions/checkout@v2
+      - name: Checkout Project
+        uses: actions/checkout@v2
 
-    - name: Lint Project
-      run: ./gradlew ktlintCheck
+      - name: Lint Project
+        run: ./gradlew ktlintCheck
 
-    - name: Build Project
-      run: ./gradlew build
+      - name: Build Project
+        run: ./gradlew build
