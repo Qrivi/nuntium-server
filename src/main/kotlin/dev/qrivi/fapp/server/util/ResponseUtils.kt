@@ -1,8 +1,10 @@
 package dev.qrivi.fapp.server.util
 
 import dev.qrivi.fapp.server.constant.SecurityConstants
-import dev.qrivi.fapp.server.controller.dto.res.AuthenticatedAccount
+import dev.qrivi.fapp.server.controller.dto.res.AuthenticatedAccountDTO
 import dev.qrivi.fapp.server.controller.dto.res.Response
+import dev.qrivi.fapp.server.controller.dto.res.SessionDTO
+import dev.qrivi.fapp.server.controller.dto.res.SessionDTOsession
 import dev.qrivi.fapp.server.persistence.entity.Account
 import dev.qrivi.fapp.server.persistence.entity.Session
 import io.jsonwebtoken.Jwts
@@ -31,20 +33,31 @@ fun generateAccessToken(account: Account, session: Session, serverName: String):
         .claim("account", account.email)
         .claim("session_description", session.description)
         .claim("refresh_token", session.token)
-        .claim("refresh_expiry", session.firstActive.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).toEpochSecond())
+        .claim("refresh_expiry", session.firstLogin.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).toEpochSecond())
         .compact()
     return "${SecurityConstants.TOKEN_PREFIX}$jwt"
 }
 
-fun Account.toAuthenticatedAccount(authorization: String) = AuthenticatedAccount(
+fun Account.toAuthenticatedAccountResponse(authorization: String) = AuthenticatedAccountDTO(
     authorization = authorization,
     email = email,
     name = name
 )
 
-fun Account.toNewAccount(authorization: String) = AuthenticatedAccount(
+fun Account.toNewAccountResponse(authorization: String) = AuthenticatedAccountDTO(
     httpStatus = HttpStatus.CREATED,
     authorization = authorization,
     email = email,
     name = name
+)
+
+fun List<Session>.toSessionResponse() = SessionDTO(
+    sessions = this.map {
+        SessionDTOsession(
+            it.token,
+            it.description,
+            it.firstLogin,
+            it.lastLogin
+        )
+    }
 )

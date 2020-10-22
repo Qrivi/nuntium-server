@@ -5,7 +5,7 @@ import dev.qrivi.fapp.server.constant.SecurityConstants
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 
-data class AuthenticatedAccount(
+data class AuthenticatedAccountDTO(
     @JsonIgnore override val httpStatus: HttpStatus = HttpStatus.OK,
     @JsonIgnore override val httpHeaders: HttpHeaders = HttpHeaders(),
 
