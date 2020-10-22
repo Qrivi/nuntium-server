@@ -2,6 +2,7 @@ package dev.qrivi.fapp.server.config
 
 import dev.qrivi.fapp.server.constant.SecurityConstants
 import dev.qrivi.fapp.server.filter.JwtAuthorizationFilter
+import dev.qrivi.fapp.server.service.AccountService
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -16,7 +17,10 @@ import org.springframework.web.servlet.HandlerExceptionResolver
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-class SecurityConfig(private val handlerExceptionResolver: HandlerExceptionResolver) : WebSecurityConfigurerAdapter() {
+class SecurityConfig(
+    private val accountService: AccountService,
+    private val handlerExceptionResolver: HandlerExceptionResolver
+) : WebSecurityConfigurerAdapter() {
 
     override fun configure(web: WebSecurity) {
         web.ignoring()
@@ -31,7 +35,7 @@ class SecurityConfig(private val handlerExceptionResolver: HandlerExceptionResol
             .authorizeRequests()
             .anyRequest().authenticated()
             .and()
-            .addFilter(JwtAuthorizationFilter(authenticationManager(), handlerExceptionResolver))
+            .addFilter(JwtAuthorizationFilter(authenticationManager(), accountService, handlerExceptionResolver))
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }

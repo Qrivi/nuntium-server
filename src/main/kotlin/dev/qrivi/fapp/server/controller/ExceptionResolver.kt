@@ -14,6 +14,7 @@ import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.SignatureException
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.NoHandlerFoundException
@@ -55,6 +56,11 @@ class ExceptionResolver(private val messages: MessageService) {
     @ExceptionHandler
     fun handleJwtException(e: JwtException, req: HttpServletRequest): ResponseEntity<Response> {
         return generateResponse(Unauthorized(reason = Unauthorized.Reason.NO_TOKEN_PROVIDED, realm = req.serverName))
+    }
+
+    @ExceptionHandler
+    fun handleAuthenticationCredentialsNotFoundException(e: AuthenticationCredentialsNotFoundException, req: HttpServletRequest): ResponseEntity<Response> {
+        return generateResponse(Unauthorized(reason = Unauthorized.Reason.INVALID_TOKEN_ACCOUNT, realm = req.serverName))
     }
 
     @ExceptionHandler

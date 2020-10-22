@@ -18,6 +18,7 @@ data class Unauthorized(
 
         when (reason) {
             Reason.INVALID_ACCESS_TOKEN -> this.error = "The provided access token is invalid"
+            Reason.INVALID_TOKEN_ACCOUNT -> this.error = "The provided access token's account does not exist"
             Reason.INVALID_REFRESH_TOKEN -> this.error = "The provided refresh token is invalid"
             Reason.EXPIRED_ACCESS_TOKEN -> this.error = "The provided access token has expired"
             Reason.EXPIRED_REFRESH_TOKEN -> this.error = "The provided refresh token has expired"
@@ -33,6 +34,7 @@ data class Unauthorized(
 
     enum class Reason {
         NO_TOKEN_PROVIDED,
+        INVALID_TOKEN_ACCOUNT,
         INVALID_ACCESS_TOKEN,
         INVALID_REFRESH_TOKEN,
         EXPIRED_ACCESS_TOKEN,
