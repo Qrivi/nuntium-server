@@ -53,6 +53,11 @@ dependencies {
     liquibaseRuntime("org.yaml:snakeyaml:1.27")
 }
 
+// Spring Boot config to make the build info available at runtime
+springBoot {
+    buildInfo()
+}
+
 // Config for the Liquibase plugin to manage the database
 liquibase {
     activities.register("main") {
