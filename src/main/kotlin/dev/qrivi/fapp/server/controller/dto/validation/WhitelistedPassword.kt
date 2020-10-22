@@ -19,7 +19,10 @@ class WhitelistedPasswordValidator : ConstraintValidator<WhitelistedPassword, St
 
     override fun initialize(constraintAnnotation: WhitelistedPassword?) {}
 
-    override fun isValid(value: String, context: ConstraintValidatorContext?): Boolean {
-        return !SecurityConstants.PASSWORD_BLACKLIST.contains(value.toLowerCase())
+    override fun isValid(value: String?, context: ConstraintValidatorContext?): Boolean {
+        SecurityConstants.PASSWORD_BLACKLIST.find { it.equals(value, ignoreCase = true) }?.let {
+            return false
+        }
+        return true
     }
 }

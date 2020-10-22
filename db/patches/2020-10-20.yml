@@ -20,11 +20,6 @@ databaseChangeLog:
                     nullable: false
                     unique: true
               - column:
-                  name: name
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
                   name: email
                   type: VARCHAR(255)
                   constraints:
@@ -35,6 +30,9 @@ databaseChangeLog:
                   type: VARCHAR(60)
                   constraints:
                     nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
               - column:
                   name: status
                   type: VARCHAR(25)

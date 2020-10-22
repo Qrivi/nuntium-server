@@ -3,6 +3,7 @@ package dev.qrivi.fapp.server.controller
 import dev.qrivi.fapp.server.controller.dto.res.Response
 import dev.qrivi.fapp.server.controller.dto.res.error.BadRequest
 import dev.qrivi.fapp.server.controller.dto.res.error.InternalServerError
+import dev.qrivi.fapp.server.controller.dto.res.error.MethodNotAllowed
 import dev.qrivi.fapp.server.controller.dto.res.error.NotFound
 import dev.qrivi.fapp.server.controller.dto.res.error.Unauthorized
 import dev.qrivi.fapp.server.service.MessageService
@@ -15,6 +16,7 @@ import io.jsonwebtoken.security.SignatureException
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.NoHandlerFoundException
@@ -31,6 +33,11 @@ class ExceptionResolver(private val messages: MessageService) {
     @ExceptionHandler
     fun handleNoHandlerFoundException(e: NoHandlerFoundException): ResponseEntity<Response> {
         return generateResponse(NotFound(error = messages["fapp.exception.NoHandlerFoundException.message"]))
+    }
+
+    @ExceptionHandler
+    fun handleHttpRequestMethodNotSupportedException(e: HttpRequestMethodNotSupportedException): ResponseEntity<Response> {
+        return generateResponse(MethodNotAllowed(error = e.message!!))
     }
 
     @ExceptionHandler

@@ -25,7 +25,7 @@ class AccountService(private val accountRepository: AccountRepository) {
         return null
     }
 
-    fun createAccount(email: String, name: String, password: String): Account {
+    fun createAccount(email: String, password: String, name: String?): Account {
         val account = Account(
             uuid = UUID.randomUUID().toString(),
             email = email,
@@ -35,6 +35,14 @@ class AccountService(private val accountRepository: AccountRepository) {
             subscriptions = mutableSetOf(),
             readItems = mutableSetOf()
         )
+        return accountRepository.save(account)
+    }
+
+    fun updateAccount(account: Account, email: String?, password: String?, name: String?): Account {
+        email?.let { account.email = it }
+        password?.let { account.password = it }
+        name?.let { account.name = it }
+
         return accountRepository.save(account)
     }
 

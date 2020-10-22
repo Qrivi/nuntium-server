@@ -1,7 +1,8 @@
 package dev.qrivi.fapp.server.util
 
 import dev.qrivi.fapp.server.constant.SecurityConstants
-import dev.qrivi.fapp.server.controller.dto.res.AuthenticatedAccountDTO
+import dev.qrivi.fapp.server.controller.dto.res.AccountDTO
+import dev.qrivi.fapp.server.controller.dto.res.AuthenticationDTO
 import dev.qrivi.fapp.server.controller.dto.res.Response
 import dev.qrivi.fapp.server.controller.dto.res.SessionDTO
 import dev.qrivi.fapp.server.controller.dto.res.SessionDTOsession
@@ -38,17 +39,25 @@ fun generateAccessToken(account: Account, session: Session, serverName: String):
     return "${SecurityConstants.TOKEN_PREFIX}$jwt"
 }
 
-fun Account.toAuthenticatedAccountResponse(authorization: String) = AuthenticatedAccountDTO(
+fun Account.toAuthenticationResponse(authorization: String) = AuthenticationDTO(
     authorization = authorization,
     email = email,
     name = name
 )
 
-fun Account.toNewAccountResponse(authorization: String) = AuthenticatedAccountDTO(
+fun Account.toNewAccountResponse(authorization: String) = AuthenticationDTO(
     httpStatus = HttpStatus.CREATED,
     authorization = authorization,
     email = email,
     name = name
+)
+
+fun Account.toAccountResponse() = AccountDTO(
+    uuid = uuid,
+    email = email,
+    name = name,
+    status = status.name,
+    subscriptionCount = subscriptions.size
 )
 
 fun List<Session>.toSessionResponse() = SessionDTO(

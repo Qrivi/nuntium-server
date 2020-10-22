@@ -5,6 +5,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
+import javax.persistence.FetchType
 import javax.persistence.JoinColumn
 import javax.persistence.JoinTable
 import javax.persistence.ManyToMany
@@ -17,20 +18,20 @@ open class Account(
     @Column(name = "uuid")
     open var uuid: String,
 
-    @Column(name = "name")
-    open var name: String,
-
     @Column(name = "email")
     open var email: String,
 
     @Column(name = "password")
     open var password: String,
 
+    @Column(name = "name")
+    open var name: String?,
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     open var status: AccountStatus,
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "subscriptions",
         joinColumns = [JoinColumn(name = "account_id", referencedColumnName = "id")],
