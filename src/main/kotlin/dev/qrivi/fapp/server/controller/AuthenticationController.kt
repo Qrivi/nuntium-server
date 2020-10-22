@@ -35,7 +35,7 @@ class AuthenticationController(
 
     @PostMapping("/register")
     fun register(
-        @RequestHeader(value = "User-Agent") userAgent: String,
+        @RequestHeader(value = HttpHeaders.USER_AGENT) userAgent: String,
         @Valid @RequestBody dto: RegisterAccountDTO,
         res: BindingResult,
         req: HttpServletRequest
@@ -44,11 +44,11 @@ class AuthenticationController(
             return generateResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
 
         if (accountService.getAccount(dto.email) != null)
-            return generateResponse(BadRequest(error = "A account was already registered with ${dto.email}"))
+            return generateResponse(BadRequest(error = "An account was already registered with ${dto.email}"))
 
         val account = accountService.createAccount(dto.email, dto.name ?: "Human", dto.password)
         val session = sessionService.createSession(account, dto.client ?: clientAnalyzer.getFromUserAgent(userAgent))
-        return generateResponse(account.toNewAccount(generateAccessToken(account, session)))
+        return generateResponse(account.toNewAccount(generateAccessToken(account, session, req.serverName)))
     }
 
     @PostMapping("/login")
@@ -65,7 +65,7 @@ class AuthenticationController(
             ?: return generateResponse(BadRequest(error = "Unregistered account or invalid password"))
 
         val session = sessionService.createSession(account, dto.client ?: clientAnalyzer.getFromUserAgent(userAgent))
-        return generateResponse(account.toAuthenticatedAccount(generateAccessToken(account, session)))
+        return generateResponse(account.toAuthenticatedAccount(generateAccessToken(account, session, req.serverName)))
     }
 
     @PostMapping("/refresh")
@@ -88,6 +88,6 @@ class AuthenticationController(
         session = sessionService.refreshSession(session, dto.client)
             ?: return generateResponse(Unauthorized(reason = Unauthorized.Reason.EXPIRED_ACCESS_TOKEN, realm = req.serverName))
 
-        return generateResponse(account.toAuthenticatedAccount(generateAccessToken(account, session)))
+        return generateResponse(account.toAuthenticatedAccount(generateAccessToken(account, session, req.serverName)))
     }
 }

@@ -17,18 +17,23 @@ fun generateResponse(response: Response): ResponseEntity<Response> {
     return ResponseEntity(response, response.httpHeaders, response.httpStatus)
 }
 
-fun generateAccessToken(account: Account, session: Session): String {
+fun generateAccessToken(account: Account, session: Session, serverName: String): String {
+    val now = Instant.now()
     val jwt = Jwts.builder()
         .signWith(Keys.hmacShaKeyFor(SecurityConstants.JWT_SECRET.toByteArray()))
         .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
-        .setIssuer(SecurityConstants.TOKEN_ISSUER)
-        .setAudience(SecurityConstants.TOKEN_AUDIENCE)
-        .setSubject(account.email)
-        .setExpiration(Date.from(Instant.now().plus(SecurityConstants.TOKEN_TTL, ChronoUnit.HOURS)))
+        .setIssuer("$serverName${SecurityConstants.AUTH_ROUTE}")
+        .setAudience(serverName)
+        .setSubject(account.uuid)
+        .setExpiration(Date.from(now.plus(SecurityConstants.TOKEN_TTL, ChronoUnit.HOURS)))
+        .setIssuedAt(Date.from(now))
+        .setNotBefore(Date.from(now))
+        .claim("account", account.email)
+        .claim("session_description", session.description)
         .claim("refresh_token", session.token)
         .claim("refresh_expiry", session.firstActive.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).toEpochSecond())
         .compact()
-    return SecurityConstants.TOKEN_PREFIX + jwt
+    return "${SecurityConstants.TOKEN_PREFIX}$jwt"
 }
 
 fun Account.toAuthenticatedAccount(authorization: String) = AuthenticatedAccount(
