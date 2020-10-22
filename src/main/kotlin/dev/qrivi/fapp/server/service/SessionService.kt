@@ -17,28 +17,32 @@ class SessionService(private val sessionRepository: SessionRepository) {
         return sessionRepository.findByToken(token)
     }
 
+    fun getSessionsForAccount(account: Account): List<Session> {
+        return sessionRepository.findByAccount(account)
+    }
+
     fun createSession(account: Account, description: String): Session {
         val now = ZonedDateTime.now(ZoneId.systemDefault())
         val session = Session(
             account = account,
             token = UUID.randomUUID().toString(),
             description = description,
-            firstActive = now,
-            lastActive = now
+            firstLogin = now,
+            lastLogin = now
         )
         return sessionRepository.save(session)
     }
 
     fun refreshSession(session: Session, description: String?): Session? {
         val now = ZonedDateTime.now(ZoneId.systemDefault())
-        if (session.lastActive.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).isBefore(now)) {
+        if (session.lastLogin.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).isBefore(now)) {
             // token too old -- not safe.
             this.deleteSession(session)
             return null
         }
 
         description?.let { session.description = description }
-        session.lastActive = now
+        session.lastLogin = now
         return sessionRepository.save(session)
     }
 

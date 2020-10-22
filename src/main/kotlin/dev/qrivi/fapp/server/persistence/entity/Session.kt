@@ -23,10 +23,10 @@ open class Session(
     @Column(name = "description")
     open var description: String,
 
-    @Column(name = "first_active")
-    open var firstActive: ZonedDateTime,
+    @Column(name = "first_login")
+    open var firstLogin: ZonedDateTime,
 
-    @Column(name = "last_active")
-    open var lastActive: ZonedDateTime
+    @Column(name = "last_login")
+    open var lastLogin: ZonedDateTime
 
 ) : Identifiable()

@@ -66,12 +66,12 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: first_active
+                  name: first_login
                   type: TIMESTAMP WITHOUT TIME ZONE
                   constraints:
                     nullable: false
               - column:
-                  name: last_active
+                  name: last_login
                   type: TIMESTAMP WITHOUT TIME ZONE
                   constraints:
                     nullable: false
