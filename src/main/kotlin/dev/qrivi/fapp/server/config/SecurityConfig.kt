@@ -1,12 +1,10 @@
 package dev.qrivi.fapp.server.config
 
-import dev.qrivi.fapp.server.constant.SecurityConstants
 import dev.qrivi.fapp.server.filter.JwtAuthorizationFilter
 import dev.qrivi.fapp.server.service.AccountService
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -22,19 +20,14 @@ class SecurityConfig(
     private val handlerExceptionResolver: HandlerExceptionResolver
 ) : WebSecurityConfigurerAdapter() {
 
-    override fun configure(web: WebSecurity) {
-        web.ignoring()
-            .antMatchers("${SecurityConstants.AUTH_ROUTE}/**")
-            .antMatchers("/dummy/setup")
-    }
-
     override fun configure(http: HttpSecurity) {
         http.cors()
             .and()
             .csrf().disable()
             .authorizeRequests()
-            .anyRequest().authenticated()
+            .anyRequest().permitAll()
             .and()
+            .antMatcher("/account/**")
             .addFilter(JwtAuthorizationFilter(authenticationManager(), accountService, handlerExceptionResolver))
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
