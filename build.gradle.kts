@@ -1,6 +1,6 @@
 val revision = System.getenv()["GITHUB_RUN_NUMBER"]
 
-group = "dev.qrivi.fapp"
+group = "dev.qrivi.nuntium"
 version = "1.0.0-${if (revision.isNullOrBlank()) "SNAPSHOT" else "r$revision"}"
 
 // Sources
@@ -64,27 +64,27 @@ liquibase {
         this.arguments = mapOf(
             "logLevel" to "info",
             "changeLogFile" to "db/changelog.yml",
-            "url" to "jdbc:postgresql://localhost:5432/fappdb_loc",
-            "username" to "fappdb_user",
-            "password" to "fappdb_password"
+            "url" to "jdbc:postgresql://localhost:5432/nuntium_loc",
+            "username" to "nuntium_user",
+            "password" to "nuntium_password"
         )
     }
     activities.register("production") {
         this.arguments = mapOf(
             "logLevel" to "info",
             "changeLogFile" to "db/changelog.yml",
-            "url" to "jdbc:postgresql://localhost:5432/fappdb",
-            "username" to "fappdb_user",
-            "password" to "fappdb_password"
+            "url" to "jdbc:postgresql://localhost:5432/nuntium",
+            "username" to "nuntium_user",
+            "password" to "nuntium_password"
         )
     }
     activities.register("generate") {
         this.arguments = mapOf(
             "logLevel" to "info",
             "changeLogFile" to "db/generated.yml",
-            "url" to "jdbc:postgresql://localhost:5432/fappdb_loc",
-            "username" to "fappdb_user",
-            "password" to "fappdb_password"
+            "url" to "jdbc:postgresql://localhost:5432/nuntium_loc",
+            "username" to "nuntium_user",
+            "password" to "nuntium_password"
         )
     }
     runList = project.properties["runList"]
@@ -96,7 +96,7 @@ jib {
         image = "openjdk:14"
     }
     to {
-        image = "qrivi/fappserver"
+        image = "qrivi/nuntium-server"
         tags = hashSetOf(version.toString(), "latest")
     }
     container {

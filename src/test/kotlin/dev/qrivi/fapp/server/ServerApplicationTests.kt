@@ -1,4 +1,4 @@
-package dev.qrivi.fapp.server
+package dev.qrivi.nuntium.server
 
 import org.springframework.boot.test.context.SpringBootTest
 

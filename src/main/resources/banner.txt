@@ -1,9 +1,8 @@
-${AnsiColor.MAGENTA}   ___                         __
-${AnsiColor.MAGENTA} /'___\                       /\ \__  __
-${AnsiColor.MAGENTA}/\ \__/   __     _____   _____\ \ ,_\/\_\    ___ ___      __
-${AnsiColor.MAGENTA}\ \ ,__\/'__`\  /\ '__`\/\ '__`\ \ \/\/\ \ /' __` __`\  /'__`\
-${AnsiColor.MAGENTA} \ \ \_/\ \L\.\_\ \ \L\ \ \ \L\ \ \ \_\ \ \/\ \/\ \/\ \/\  __/
-${AnsiColor.MAGENTA}  \ \_\\ \__/.\_\\ \ ,__/\ \ ,__/\ \__\\ \_\ \_\ \_\ \_\ \____\
-${AnsiColor.MAGENTA}   \/_/ \/__/\/_/ \ \ \/  \ \ \/  \/__/ \/_/\/_/\/_/\/_/\/____/
-${AnsiColor.MAGENTA}                   \ \_\   \ \_\
-${AnsiColor.MAGENTA}                    \/_/    \/_/                 ${AnsiColor.BLACK}oh yea boiiii
+${AnsiColor.MAGENTA}                                               88
+${AnsiColor.MAGENTA}                                        ,d     ""
+${AnsiColor.MAGENTA}                                        88
+${AnsiColor.MAGENTA}8b,dPPYba,   88       88  8b,dPPYba,  MM88MMM  88  88       88  88,dPYba,,adPYba,
+${AnsiColor.MAGENTA}88P'   `"8a  88       88  88P'   `"8a   88     88  88       88  88P'   "88"    "8a
+${AnsiColor.MAGENTA}88       88  88       88  88       88   88     88  88       88  88      88      88
+${AnsiColor.MAGENTA}88       88  "8a,   ,a88  88       88   88,    88  "8a,   ,a88  88      88      88
+${AnsiColor.MAGENTA}88       88   `"YbbdP'Y8  88       88   "Y888  88   `"YbbdP'Y8  88      88      88

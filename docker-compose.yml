@@ -1,23 +1,23 @@
 version: '3'
 
 services:
-    fappstore:
-        container_name: fappstore
+    nuntium-store:
+        container_name: nuntium-store
         image: 'postgres:12'
         ports:
             - '5432:5432'
         environment:
-            POSTGRES_DB: 'fappdb_loc'
-            POSTGRES_USER: 'fappdb_user'
-            POSTGRES_PASSWORD: 'fappdb_password'
+            POSTGRES_DB: 'nuntium_loc'
+            POSTGRES_USER: 'nuntium_user'
+            POSTGRES_PASSWORD: 'nuntium_password'
         volumes:
             - ./db/data:/var/lib/postgresql/data
 
-    fappserver:
-        container_name: fappserver
-        image: 'qrivi/fappserver:latest'
+    nuntium-server:
+        container_name: nuntium-server
+        image: 'qrivi/nuntium-server:latest'
         restart: always
         ports:
             - '8080:8080'
         depends_on:
-            - fappstore
+            - nuntium-store
