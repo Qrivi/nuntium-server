@@ -20,7 +20,9 @@ class InfoController(
     fun getInfo(): ResponseEntity<Response> {
         return generateResponse(
             InfoDTO(
+                name = "nuntium-${buildProperties.name}",
                 version = buildProperties.version,
+                build = buildProperties.time,
                 clock = ZonedDateTime.now()
             )
         )
