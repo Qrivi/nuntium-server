@@ -1,4 +1,4 @@
-val revision = System.getenv()["GITHUB_RUN_NUMBER"]
+val revision = System.getenv("GITHUB_RUN_NUMBER")
 
 group = "dev.qrivi.nuntium"
 version = "1.0.0-${if (revision.isNullOrBlank()) "SNAPSHOT" else "r$revision"}"
@@ -60,31 +60,17 @@ springBoot {
 
 // Config for the Liquibase plugin to manage the database
 liquibase {
-    activities.register("main") {
+    activities.register("default") {
         this.arguments = mapOf(
-            "logLevel" to "info",
-            "changeLogFile" to "db/changelog.yml",
-            "url" to "jdbc:postgresql://localhost:5432/nuntium_loc",
-            "username" to "nuntium_user",
-            "password" to "nuntium_password"
+            "defaultsFile" to "src/main/resources/liquibase.properties",
+            "url" to System.getenv("SPRING_DATASOURCE_URL"),
+            "username" to System.getenv("SPRING_DATASOURCE_USERNAME"),
+            "password" to System.getenv("SPRING_DATASOURCE_PASSWORD")
         )
     }
-    activities.register("production") {
+    activities.register("dev") {
         this.arguments = mapOf(
-            "logLevel" to "info",
-            "changeLogFile" to "db/changelog.yml",
-            "url" to "jdbc:postgresql://localhost:5432/nuntium",
-            "username" to "nuntium_user",
-            "password" to "nuntium_password"
-        )
-    }
-    activities.register("generate") {
-        this.arguments = mapOf(
-            "logLevel" to "info",
-            "changeLogFile" to "db/generated.yml",
-            "url" to "jdbc:postgresql://localhost:5432/nuntium_loc",
-            "username" to "nuntium_user",
-            "password" to "nuntium_password"
+            "defaultsFile" to "src/main/resources/liquibase-dev.properties"
         )
     }
     runList = project.properties["runList"]
@@ -112,6 +98,18 @@ tasks.register<Copy>("installGitHooks") {
     into(".git/hooks")
 }
 
+// Alternative command to run app with "dev" as active Spring profile
+tasks.register("bootRunDev") {
+    group = "application"
+    description = "Runs this project as a Spring Boot application with the dev profile"
+    doFirst {
+        tasks.bootRun.configure {
+            systemProperty("spring.profiles.active", "dev")
+        }
+    }
+    finalizedBy("bootRun")
+}
+
 // Kotlin compiler arguments and chaining installGitHooks task
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
@@ -125,4 +123,11 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 // Use JUnit for tests
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.register("dummy") {
+    println(System.getenv("GITHUB_RUN_NUMBER"));
+    System.getenv().forEach {
+        println(it.key + ": " + it.value)
+    }
 }

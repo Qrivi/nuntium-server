@@ -1,47 +1,46 @@
-# nuntium
+# nuntium-server
 <a href="https://github.com/Qrivi/nuntium-server/actions"><img alt="CI" align="right" src="https://github.com/Qrivi/nuntium-server/workflows/CI/badge.svg?branch=develop"></a>
 
 ---
 
-👷 Spring Boot back-end _currently being written_ in Kotlin for an application I hope I can start developing soon.
+👷 Spring Boot back-end _currently being written_ in Kotlin.
 
 ---
 
-### Run as in production
+## How to run
 
-- Fetch a PostgreSQL image and the `nuntium-server` image from Docker Hub, and run as intended for production.
-```shell
-docker rmi -f qrivi/nuntium-server # Optional, ensures latest image is fetched
-docker-compose up
-```
-⚠️ Will give errors for now, as database won't have been set up properly, and `nuntium-server` image on DockerHub is out of date (too early to put much time in Docker).
+> Put one foot in front of the other. Repeat this process rapidly.
 
-### Run for development
+Now my dad is proud, below are the steps to get up and running after a `git clone`.
 
-- Run the database from the PostgreSQL Docker image in `docker-compose.yml`.
+We will need a database named `nuntium_loc` on localhost with as owner the user `nuntium_user` with
+password `nuntium_password`. If you have Docker installed, you can quickly spin up this database as
+follows:
 ```shell
 docker-compose run --service-ports nuntium-store
 ```
 
-- Local database works too, if you create user, password and database (already done if using Docker).
+Without Docker, you will need to create user and database yourself.
 ```shell
 psql -c "CREATE ROLE nuntium_user WITH LOGIN superuser PASSWORD 'nuntium_password';"
 psql -c "CREATE DATABASE nuntium_loc WITH OWNER nuntium_user;"
 ```
 
-- Set up the database with the nifty Liquibase Gradle plugin.
+Next up we will set up the database using the nifty Liquibase Gradle plugin. Liquibase will create
+tables and add constraints.
 ```shell
-./gradlew dropAll update -PrunList=main
+./gradlew dropAll update -PrunList=dev
 ```
 
-- Deploy and run a `nuntium-server` instance.
+We are now ready to deploy a local `nuntium-server` instance.
 ```shell
-./gradlew bootRun
+./gradlew bootRunDev
 ```
 
-### Other cool things
+## Other cool things
 
 - Build a local Docker image with `nuntium-server` deployed.
 ```shell
-./gradlew clean build jibDockerBuild
+./gradlew clean build jibDockerBuild # note to future self
 ```
+

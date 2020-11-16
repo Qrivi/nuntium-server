@@ -1,3 +1,6 @@
+### Application secrets ###
+/secret/
+
 HELP.md
 .gradle
 build/
