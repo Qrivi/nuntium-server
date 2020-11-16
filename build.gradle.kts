@@ -124,10 +124,3 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
-tasks.register("dummy") {
-    println(System.getenv("GITHUB_RUN_NUMBER"));
-    System.getenv().forEach {
-        println(it.key + ": " + it.value)
-    }
-}
