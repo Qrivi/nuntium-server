@@ -48,7 +48,7 @@ class AccountController(
         dto.name?.let { updatedFields.add("name") }
         dto.password?.let { updatedFields.add("password") }
 
-        val updatedEntity = accountService.updateAccount(
+        val updatedEntity = accountService.update(
             account = account,
             email = dto.email,
             password = dto.password,
@@ -62,6 +62,6 @@ class AccountController(
     fun getSessions(
         @AuthenticationPrincipal account: Account,
     ): ResponseEntity<Response> {
-        return generateResponse(sessionService.getSessionsForAccount(account).toSessionResponse())
+        return generateResponse(sessionService.getByAccount(account).toSessionResponse())
     }
 }

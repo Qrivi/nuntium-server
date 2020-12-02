@@ -4,24 +4,33 @@ import dev.qrivi.nuntium.server.constant.SecurityConstants
 import dev.qrivi.nuntium.server.persistence.entity.Account
 import dev.qrivi.nuntium.server.persistence.entity.Session
 import dev.qrivi.nuntium.server.persistence.repository.SessionRepository
+import org.hibernate.Hibernate
 import org.springframework.stereotype.Service
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.UUID
+import javax.transaction.Transactional
 
 @Service
+@Transactional
 class SessionService(private val sessionRepository: SessionRepository) {
 
-    fun getSession(token: String): Session? {
+    fun getByToken(token: String): Session? {
         return sessionRepository.findByToken(token)
     }
 
-    fun getSessionsForAccount(account: Account): List<Session> {
+    fun getInitializedByToken(token: String): Session? {
+        val session = this.getByToken(token) ?: return null
+        Hibernate.initialize(session.account)
+        return session
+    }
+
+    fun getByAccount(account: Account): List<Session> {
         return sessionRepository.findByAccount(account)
     }
 
-    fun createSession(account: Account, description: String): Session {
+    fun create(account: Account, description: String): Session {
         val now = ZonedDateTime.now(ZoneId.systemDefault())
         val session = Session(
             account = account,
@@ -33,11 +42,11 @@ class SessionService(private val sessionRepository: SessionRepository) {
         return sessionRepository.save(session)
     }
 
-    fun refreshSession(session: Session, description: String?): Session? {
+    fun refresh(session: Session, description: String?): Session? {
         val now = ZonedDateTime.now(ZoneId.systemDefault())
         if (session.lastLogin.plus(SecurityConstants.REFRESH_TTL, ChronoUnit.HOURS).isBefore(now)) {
             // token too old -- not safe.
-            this.deleteSession(session)
+            this.delete(session)
             return null
         }
 
@@ -46,7 +55,7 @@ class SessionService(private val sessionRepository: SessionRepository) {
         return sessionRepository.save(session)
     }
 
-    fun deleteSession(session: Session) {
+    fun delete(session: Session) {
         sessionRepository.delete(session)
     }
 }

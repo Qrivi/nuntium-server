@@ -31,7 +31,7 @@ open class Account(
     @Enumerated(EnumType.STRING)
     open var status: AccountStatus,
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "subscriptions",
         joinColumns = [JoinColumn(name = "account_id", referencedColumnName = "id")],
@@ -39,7 +39,7 @@ open class Account(
     )
     open var subscriptions: MutableSet<Feed>,
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "read_items",
         joinColumns = [JoinColumn(name = "account_id", referencedColumnName = "id")],

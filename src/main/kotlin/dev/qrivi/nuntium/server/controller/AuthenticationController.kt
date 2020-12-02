@@ -43,11 +43,11 @@ class AuthenticationController(
         if (res.hasErrors())
             return generateResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
 
-        if (accountService.getAccount(dto.email) != null)
+        if (accountService.getByEmail(dto.email) != null)
             return generateResponse(BadRequest(error = "An account was already registered with ${dto.email}"))
 
-        val account = accountService.createAccount(dto.email, dto.password, dto.name)
-        val session = sessionService.createSession(account, dto.client ?: clientAnalyzer.getFromUserAgent(userAgent))
+        val account = accountService.create(dto.email, dto.password, dto.name)
+        val session = sessionService.create(account, dto.client ?: clientAnalyzer.getFromUserAgent(userAgent))
         return generateResponse(account.toNewAccountResponse(generateAccessToken(account, session, req.serverName)))
     }
 
@@ -61,10 +61,10 @@ class AuthenticationController(
         if (res.hasErrors())
             return generateResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
 
-        val account = accountService.getAccountWithPassword(dto.email, dto.password)
+        val account = accountService.getByEmailAndPassword(dto.email, dto.password)
             ?: return generateResponse(BadRequest(error = "Unregistered account or invalid password"))
 
-        val session = sessionService.createSession(account, dto.client ?: clientAnalyzer.getFromUserAgent(userAgent))
+        val session = sessionService.create(account, dto.client ?: clientAnalyzer.getFromUserAgent(userAgent))
         return generateResponse(account.toAuthenticationResponse(generateAccessToken(account, session, req.serverName)))
     }
 
@@ -78,14 +78,14 @@ class AuthenticationController(
         if (res.hasErrors())
             return generateResponse(BadRequest(errors = res.allErrors.map { it.defaultMessage as String }))
 
-        val account = accountService.getAccount(dto.email)
+        val account = accountService.getByEmail(dto.email)
             ?: return generateResponse(BadRequest(error = "Unregistered account"))
 
-        var session = sessionService.getSession(dto.token)
+        var session = sessionService.getInitializedByToken(dto.token)
         if (session?.account != account) // token is null or token account does not match the requested account
             return generateResponse(BadRequest(error = "Invalid refresh token"))
 
-        session = sessionService.refreshSession(session, dto.client)
+        session = sessionService.refresh(session, dto.client)
             ?: return generateResponse(Unauthorized(reason = Unauthorized.Reason.EXPIRED_ACCESS_TOKEN, realm = req.serverName))
 
         return generateResponse(account.toAuthenticationResponse(generateAccessToken(account, session, req.serverName)))
